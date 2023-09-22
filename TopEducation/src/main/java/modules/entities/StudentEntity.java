@@ -18,7 +18,6 @@ public class StudentEntity {
     private Long id;
 
     private String rut;
-
     private String nombreEstudiante;
     private String apellidoEstudiante;
     private String tipoEscuela;

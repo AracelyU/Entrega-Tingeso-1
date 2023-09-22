@@ -19,11 +19,28 @@ public class StudentController {
 
     @GetMapping("/listar")
     public String listar(Model model){
-        ArrayList<StudentEntity> estudiantes = studentService.getStudents();
+        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("STUDENTS", estudiantes);
         return "index";
     }
 
+
+    @GetMapping("/nuevoEstudiante")
+    public String proveedor(){
+        return "newStudent";
+    }
+    @PostMapping("/nuevoEstudiante")
+    public String nuevoProveedor(@RequestParam("rut") String rut,
+                                 @RequestParam("nombreEstudiante") String nombreEstudiante,
+                                 @RequestParam("apellidoEstudiante") String apellidoEstudiante,
+                                 @RequestParam("tipoEscuela") String tipoEscuela,
+                                 @RequestParam("nombreEscuela") String nombreEscuela,
+                                 @RequestParam("anioEgreso") String anioEgreso){
+
+        studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante,
+                                        tipoEscuela,nombreEscuela, anioEgreso){
+        return "redirect:/nuevoEstudiante";
+    }
 
 
 

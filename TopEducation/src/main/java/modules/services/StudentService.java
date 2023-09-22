@@ -13,9 +13,26 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
-    public ArrayList<StudentEntity> getStudents() {
+    // obtener estudiantes
+    public ArrayList<StudentEntity> obtenerEstudiantes(){
         return (ArrayList<StudentEntity>) studentRepository.findAll();
     }
+
+    // guardar estudiante
+    public void guardarEstudiante(String rut, String nombreEstudiante, String apellidoEstudiante,
+                                  String tipoEscuela, String nombreEscuela, String anioEgreso){
+        StudentEntity student = new StudentEntity();
+        student.setRut(rut);
+        student.setnombreEstudiante(nombreEstudiante);
+        student.setnombreEstudiante(apellidoEstudiante);
+        student.settipoEscuela(tipoEscuela);
+        student.setnombreEscuela(nombreEscuela);
+        student.setanioEgreso(anioEgreso);
+        studentRepository.save(student);
+    }
+
+
+
 
 
 
