@@ -35,10 +35,11 @@ public class StudentController {
     public String nuevoEstudiante(@RequestParam("rut") String rut,
                                   @RequestParam("nombreEstudiante") String nombreEstudiante,
                                   @RequestParam("apellidoEstudiante") String apellidoEstudiante,
+                                  @RequestParam("fechaNacimiento") String fechaNacimiento,
                                   @RequestParam("tipoEscuela") String tipoEscuela,
                                   @RequestParam("nombreEscuela") String nombreEscuela,
                                   @RequestParam("anioEgreso") String anioEgreso) {
-        studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, tipoEscuela, nombreEscuela, anioEgreso);
+        studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, fechaNacimiento, tipoEscuela, nombreEscuela, anioEgreso);
         return "redirect:/nuevoEstudiante";
     }
 

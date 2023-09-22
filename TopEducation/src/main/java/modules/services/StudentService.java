@@ -20,11 +20,12 @@ public class StudentService {
 
     // guardar estudiante
     public void guardarEstudiante(String rut, String nombreEstudiante, String apellidoEstudiante,
-                                  String tipoEscuela, String nombreEscuela, String anioEgreso){
+                                  String fechaNacimiento, String tipoEscuela, String nombreEscuela, String anioEgreso){
         StudentEntity student = new StudentEntity();
         student.setRut(rut);
         student.setNombreEstudiante(nombreEstudiante);
         student.setApellidoEstudiante(apellidoEstudiante);
+        student.setFechaNacimiento(fechaNacimiento);
         student.setTipoEscuela(tipoEscuela);
         student.setNombreEscuela(nombreEscuela);
         student.setAnioEgreso(anioEgreso);

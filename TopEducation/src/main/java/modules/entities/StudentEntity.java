@@ -19,6 +19,7 @@ public class StudentEntity {
     private String rut;
     private String nombreEstudiante;
     private String apellidoEstudiante;
+    private String fechaNacimiento;
     private String tipoEscuela;
     private String nombreEscuela;
     private String anioEgreso;
