@@ -23,17 +23,12 @@ public class StudentService {
                                   String tipoEscuela, String nombreEscuela, String anioEgreso){
         StudentEntity student = new StudentEntity();
         student.setRut(rut);
-        student.setnombreEstudiante(nombreEstudiante);
-        student.setnombreEstudiante(apellidoEstudiante);
-        student.settipoEscuela(tipoEscuela);
-        student.setnombreEscuela(nombreEscuela);
-        student.setanioEgreso(anioEgreso);
+        student.setNombreEstudiante(nombreEstudiante);
+        student.setApellidoEstudiante(apellidoEstudiante);
+        student.setTipoEscuela(tipoEscuela);
+        student.setNombreEscuela(nombreEscuela);
+        student.setAnioEgreso(anioEgreso);
         studentRepository.save(student);
     }
-
-
-
-
-
 
 }

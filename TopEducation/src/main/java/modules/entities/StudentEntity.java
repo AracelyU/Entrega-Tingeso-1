@@ -6,17 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Table(name = "estudiante")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "estudiante")
+@Data
 public class StudentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
-
     private String rut;
     private String nombreEstudiante;
     private String apellidoEstudiante;

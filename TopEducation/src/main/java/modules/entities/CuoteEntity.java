@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
-
+/*
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -36,3 +36,4 @@ public class CuoteEntity {
     private StudentEntity estudiante;
 
 }
+*/

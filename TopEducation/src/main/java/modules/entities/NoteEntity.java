@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+/*
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,3 +26,4 @@ public class NoteEntity {
     private StudentEntity estudiante;
 
 }
+*/

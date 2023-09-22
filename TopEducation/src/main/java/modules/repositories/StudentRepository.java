@@ -10,6 +10,4 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Long> {
     public StudentEntity findByRut (String rut);
 
 
-
-
 }

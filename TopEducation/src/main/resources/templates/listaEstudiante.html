@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Estudiantes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-sm">
+    <h1>Listado de Estudiantes</h1>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>RUT</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Tipo de Escuela</th>
+            <th>Nombre de la Escuela</th>
+            <th>Año de egreso</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.rut}"></td>
+            <td th:text="${student.nombreEstudiante}"></td>
+            <td th:text="${student.apellidoEstudiante}"></td>
+            <td th:text="${student.tipoEscuela}"></td>
+            <td th:text="${student.nombreEscuela}"></td>
+            <td th:text="${student.anioEgreso}"></td>
+            <td>
+                <a class="btn btn-primary" href="#" role="button">Editar</a>
+                <a class="btn btn-danger" href="#" role="button">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+
