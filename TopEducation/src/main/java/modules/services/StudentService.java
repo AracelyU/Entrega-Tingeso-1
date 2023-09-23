@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -17,6 +18,7 @@ public class StudentService {
     public ArrayList<StudentEntity> obtenerEstudiantes(){
         return (ArrayList<StudentEntity>) studentRepository.findAll();
     }
+
 
     // guardar estudiante
     public void guardarEstudiante(String rut, String nombreEstudiante, String apellidoEstudiante,
@@ -31,5 +33,13 @@ public class StudentService {
         student.setAnioEgreso(anioEgreso);
         studentRepository.save(student);
     }
+
+
+    // encontrar estudiante por rut
+    public StudentEntity encontrarRut(String rut){
+        return studentRepository.findByRut(rut);
+    }
+
+
 
 }

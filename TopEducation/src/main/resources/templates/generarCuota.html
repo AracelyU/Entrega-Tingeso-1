@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generar Pago</title>
+</head>
+<body>
+    <div class="container">
+        <h1><b>Generando Cuotas</b></h1>
+
+        <form  th:action="@{/generarCuota}" method="POST">
+
+            <div class="formcontainer">
+                <hr/>
+                <h5>Seleccione un Alumno:</h5>
+                <select name="alumno">
+                    <option value="">Selecciona un Alumno</option>
+                    <option th:each="student : ${students}" th:value="${student.rut}">
+                        <span th:text="${student.nombreEstudiante + student.apellidoEstudiante}"></span>
+                    </option>
+                </select>
+            </div>
+
+            <div class="formcontainer">
+                <hr/>
+                <h5>Seleccione una Opción de Pago:</h5>
+                <label for="contado">Pago al Contado:</label>
+                <input type="radio" id="contado" name="opcion_pago" value="contado">
+                <br>
+                <label for="cuotas">Pago en Cuotas:</label>
+                <input type="radio" id="cuotas" name="opcion_pago" value="cuotas">
+                <br><br>
+                <input type="submit" value="Seleccionar">
+            </div>
+
+
+
+        </form>
+    </div>
+
+</body>
+</html>

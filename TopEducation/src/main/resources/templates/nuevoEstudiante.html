@@ -10,10 +10,12 @@
 <div class="container-sm">
     <h1>Formulario de Estudiantes</h1>
     <form  th:action="@{/nuevoEstudiante}" method="POST">
+
         <h1><b>Registrar nuevo Estudiante</b></h1>
         <div class="formcontainer">
             <hr/>
             <div class="container">
+
                 <label><strong>Rut</strong></label>
                 <label for="rut"></label><input type="text" id = "rut"
                                                 placeholder="Ingrese el rut" name="rut" required>
@@ -43,6 +45,7 @@
                                                           placeholder="Ingrese el año de egreso" name="anioEgreso" required>
             </div>
             <button type="submit">Registrar Estudiante</button>
+            <div th:if="${mensajeRegistro != null}" th:text="${mensajeRegistro}"></div>
         </div>
     </form>
 </div>
