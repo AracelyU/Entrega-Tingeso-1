@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "cuotas")
+@Table(name = "pago")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,7 +19,7 @@ public class GeneratePaymentsEntity {
     private Long id;
     private String tipoPago;
     private Integer numeroCuota;
-    private Float montoPago;
+    private Float montoPago;  // esto cambia según es contado o en cuotas
 
     // para asociarlo con un estudiante
     @ManyToOne

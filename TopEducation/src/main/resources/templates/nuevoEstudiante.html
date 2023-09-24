@@ -32,9 +32,17 @@
                 <label for="fechaNacimiento"></label><input type="text" id = "fechaNacimiento"
                                                            placeholder="Ingrese fecha de nacimiento" name="fechaNacimiento" required>
                 <br>
-                <label><strong>Tipo Escuela (privado/ subvencionado/ comuna)</strong></label>
-                <label for="tipoEscuela"></label><input type="text" id = "tipoEscuela"
-                                                        placeholder="Ingrese el tipo de escuela" name="tipoEscuela" required>
+                <label><strong>Tipo Escuela</strong></label>
+                <br>
+                <label for="municipal">Comuna:</label>
+                <input type="radio" id="municipal" name="tipoEscuela" value="municipal" required>
+                <br>
+                <label for="subvencionado">Subvencionado:</label>
+                <input type="radio" id="subvencionado" name="tipoEscuela" value="subvencionado" required>
+                <br>
+                <label for="privado">Privado:</label>
+                <input type="radio" id="privado" name="tipoEscuela" value="privado" required>
+
                 <br>
                 <label><strong>Nombre Escuela</strong></label>
                 <label for="nombreEscuela"></label><input type="text" id = "nombreEscuela"

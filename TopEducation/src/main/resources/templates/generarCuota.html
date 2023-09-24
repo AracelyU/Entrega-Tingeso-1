@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Generar Pago</title>
+
 </head>
 <body>
     <div class="container">
@@ -13,7 +14,7 @@
             <div class="formcontainer">
                 <hr/>
                 <h5>Seleccione un Alumno:</h5>
-                <select name="alumno">
+                <select name="alumno" required>
                     <option value="">Selecciona un Alumno</option>
                     <option th:each="student : ${students}" th:value="${student.rut}">
                         <span th:text="${student.nombreEstudiante + student.apellidoEstudiante}"></span>
@@ -25,17 +26,28 @@
                 <hr/>
                 <h5>Seleccione una Opción de Pago:</h5>
                 <label for="contado">Pago al Contado:</label>
-                <input type="radio" id="contado" name="opcion_pago" value="contado">
+                <input type="radio" id="contado" name="opcion_pago" value="contado" required>
                 <br>
                 <label for="cuotas">Pago en Cuotas:</label>
-                <input type="radio" id="cuotas" name="opcion_pago" value="cuotas">
+                <input type="radio" id="cuotas" name="opcion_pago" value="cuotas" required>
                 <br><br>
+
+                <!-- Campo de entrada de número habilitado solo cuando "Pago en Cuotas" está seleccionado -->
+                <label for="numeroCuotas">Número de Cuotas:</label>
+                <input type="number" id="numeroCuotas" name="numero_cuotas"  value="1" required>
+                <br><br>
+
                 <input type="submit" value="Seleccionar">
             </div>
 
 
 
+
+
+
         </form>
+
+
     </div>
 
 </body>

@@ -21,16 +21,6 @@ public class GeneratePaymentController {
     @Autowired
     private StudentService studentService;
 
-    /*
-    @GetMapping("/seleccionarEstudiante")
-    public String seleccionarEstudiante(Model model) {
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        model.addAttribute("students", estudiantes);
-        return "seleccionarEstudiante";
-    }
-
-    */
-
 
     @GetMapping("/generarCuota")
     public String generarCuota(Model model) {
@@ -41,14 +31,19 @@ public class GeneratePaymentController {
 
     @PostMapping("/generarCuota")
     public String generandoCuota(@RequestParam("opcion_pago") String opcionPago,
-                                 @RequestParam("alumno") String rut){
-
-
+                                 @RequestParam("alumno") String rut,
+                                 @RequestParam("numeroCuotas") Integer numeroCuotas,
+                                 Model model){
         StudentEntity stu = studentService.encontrarRut(rut);
+        int salvar = generatePaymentService.guardarPago(stu, numeroCuotas, opcionPago);
 
-        System.out.println(opcionPago);
-        System.out.println(rut);
-        System.out.println(stu.getFechaNacimiento());
+        System.out.println(salvar);
+
+        if(salvar == 1){ // se creo bien el pago
+            return "redirect:/generarCuota";
+        }
+
+        model.addAttribute("error", "Ha ocurrido un error al generar la cuota.");
         return "redirect:/generarCuota";
     }
 
