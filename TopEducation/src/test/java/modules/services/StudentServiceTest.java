@@ -8,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/* ACLARACIONES
+* Para usar los test se recomienda tener las base de datos estudiante vacia
+* */
 @SpringBootTest
 class StudentServiceTest {
 
@@ -34,12 +38,21 @@ class StudentServiceTest {
 
 
     @Test
-    void testGuardarEstudiante(){
+    void testGuardarEstudiante(){   // también se prueba encontrarRut
         studentService.guardarEstudiante("987654321", "Alex", "Van",
                 "2003/05/13", "privado", "Escuela 1", "2023");
 
         StudentEntity nuevoEstudiante = studentService.encontrarRut("987654321");
         assertEquals("987654321", nuevoEstudiante.getRut());
+        studentRepository.delete(nuevoEstudiante);
+    }
+
+    @Test
+    void testEncontrarId(){
+        studentService.guardarEstudiante("987654321", "Alex", "Van",
+                "2003/05/13", "privado", "Escuela 1", "2023");
+        StudentEntity nuevoEstudiante = studentService.encontrarId((long) 1);
+        assertEquals("municipal", nuevoEstudiante.getTipoEscuela());
         studentRepository.delete(nuevoEstudiante);
     }
 

@@ -19,7 +19,6 @@ public class StudentService {
         return (ArrayList<StudentEntity>) studentRepository.findAll();
     }
 
-
     // guardar estudiante
     public void guardarEstudiante(String rut, String nombreEstudiante, String apellidoEstudiante,
                                   String fechaNacimiento, String tipoEscuela, String nombreEscuela, String anioEgreso){
@@ -40,6 +39,8 @@ public class StudentService {
         return studentRepository.findByRut(rut);
     }
 
+    // encontrar estudiante por id
+    public StudentEntity encontrarId(Long id){ return studentRepository.findByid(id); }
 
 
 

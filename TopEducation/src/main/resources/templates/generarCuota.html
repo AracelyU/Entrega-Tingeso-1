@@ -3,52 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Generar Pago</title>
-
 </head>
 <body>
     <div class="container">
-        <h1><b>Generando Cuotas</b></h1>
-
+        <h1><b>Generando Pagos</b></h1>
+        <div th:if="${mensaje}" class="alert alert-success">
+            <p th:text="${mensaje}"></p>
+        </div>
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
         <form  th:action="@{/generarCuota}" method="POST">
-
-            <div class="formcontainer">
-                <hr/>
-                <h5>Seleccione un Alumno:</h5>
+            <hr/>
+            <h5>Seleccione un Alumno:</h5>
+            <label>
                 <select name="alumno" required>
                     <option value="">Selecciona un Alumno</option>
-                    <option th:each="student : ${students}" th:value="${student.rut}">
+                    <option th:each="student : ${students}" th:value="${student.id}">
                         <span th:text="${student.nombreEstudiante + student.apellidoEstudiante}"></span>
                     </option>
                 </select>
-            </div>
-
-            <div class="formcontainer">
-                <hr/>
-                <h5>Seleccione una Opción de Pago:</h5>
-                <label for="contado">Pago al Contado:</label>
-                <input type="radio" id="contado" name="opcion_pago" value="contado" required>
-                <br>
-                <label for="cuotas">Pago en Cuotas:</label>
-                <input type="radio" id="cuotas" name="opcion_pago" value="cuotas" required>
-                <br><br>
-
-                <!-- Campo de entrada de número habilitado solo cuando "Pago en Cuotas" está seleccionado -->
-                <label for="numeroCuotas">Número de Cuotas:</label>
-                <input type="number" id="numeroCuotas" name="numero_cuotas"  value="1" required>
-                <br><br>
-
-                <input type="submit" value="Seleccionar">
-            </div>
-
-
-
-
-
-
+            </label>
+            <h5>Seleccione una Opción de Pago:</h5>
+            <label for="contado">Pago al Contado:</label>
+            <input type="radio" id="contado" name="opcionPago" value="contado" required>
+            <br>
+            <label for="cuotas">Pago en Cuotas:</label>
+            <input type="radio" id="cuotas" name="opcionPago" value="cuotas" required>
+            <br><br>
+            <label for="numeroCuotas">Número de Cuotas:</label>
+            <input type="number" id="numeroCuotas" name="numeroCuotas"  value="1" required>
+            <br><br>
+            <input type="submit" value="Crear Pago">
+            <hr/>
         </form>
-
-
     </div>
-
 </body>
 </html>
