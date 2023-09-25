@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mostrar Cuotas</title>
+</head>
+<body>
+<div class="container">
+    <h1><b>Mostrando Cuotas</b></h1>
+
+    <form th:action="@{/mostrarCuota}" method="POST">
+
+        <h5>Seleccione un Estudiante:</h5>
+        <label>
+            <select name="pago" required>
+                <option value="">Selecciona un Estudiante</option>
+                <option th:each="pago : ${pagos}" th:value="${pago.id}">
+                    <span th:text="${pago.getStudent().nombreEstudiante + ' ' + pago.getStudent().apellidoEstudiante}"></span>
+                </option>
+            </select>
+        </label>
+        <input type="submit" value="Mostrar Cuotas">
+    </form>
+    <br>
+    <!-- Tabla para mostrar las cuotas del estudiante -->
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Número de Cuota</th><br>
+            <th>Valor de Cuota</th><br>
+            <th>Estado de Cuota</th><br>
+            <th>Fecha de Vencimiento</th><br>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Aquí puedes iterar sobre las cuotas del estudiante y mostrarlas en la tabla -->
+        <tr th:each="cuota : ${cuotas}">
+            <td th:text="${cuota.numeroCuota}"></td>
+            <td th:text="${cuota.valorCuota}"></td>
+            <td th:text="${cuota.estadoCuota}"></td>
+            <td th:text="${cuota.fechaVencimiento}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

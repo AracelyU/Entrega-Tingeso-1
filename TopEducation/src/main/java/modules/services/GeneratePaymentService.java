@@ -8,6 +8,8 @@ import modules.repositories.GeneratePaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class GeneratePaymentService {
 
@@ -17,7 +19,10 @@ public class GeneratePaymentService {
     @Autowired
     CuotaRepository cuotaRepository;
 
-
+    // obtener estudiantes
+    public ArrayList<GeneratePaymentsEntity> obtenerPagos(){
+        return (ArrayList<GeneratePaymentsEntity>) generatePaymentRepository.findAll();
+    }
 
     public GeneratePaymentsEntity encontrarPagoPorId(Long id){ return generatePaymentRepository.findByid(id);}
 
@@ -66,6 +71,7 @@ public class GeneratePaymentService {
         g.setStudent(s);
         g.setTipoPago(tipoPago);
         g.setNumeroCuota(numeroCuotas);
+        g.setMatricula((float) 70000);
         if(g.getTipoPago().equals("contado")){
             g.setMontoPago((float) 750000);
         }else{

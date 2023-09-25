@@ -20,6 +20,7 @@ public class GeneratePaymentsEntity {
     private String tipoPago;
     private Integer numeroCuota;
     private Float montoPago;  // esto cambia según es contado o en cuotas
+    private Float matricula;
 
     // para asociarlo con un estudiante
     @ManyToOne

@@ -18,7 +18,7 @@ public class StudentController {
     private StudentService studentService;
     private GeneratePaymentService generatePaymentService;
 
-    @GetMapping("/listar")
+    @GetMapping("/listaEstudiante")
     public String listar(Model model) {
         ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
@@ -41,32 +41,6 @@ public class StudentController {
         studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, fechaNacimiento, tipoEscuela, nombreEscuela, anioEgreso);
         return "redirect:/nuevoEstudiante";
     }
-
-
-
-
-
-    @GetMapping("/seleccionarEstudiante")
-    public String seleccionarEstudiante() {
-        return "seleccionarEstudiante";
-    }
-    @PostMapping("/mostrarEstudiantes")
-    public String mostrarEstudiantes(Model model) {
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        model.addAttribute("students", estudiantes);
-        return "seleccionarEstudiante";
-    }
-
-    @GetMapping("/seleccionarEstudiante/{rut}")
-    public String seleccionarEstudiante(@PathVariable("rut") String rut) {
-
-        StudentEntity student = studentService.encontrarRut(rut);
-        // Aquí puedes implementar la lógica para seleccionar el estudiante con el ID proporcionado
-        // Puedes redirigir a una página de confirmación o realizar otras acciones según tu necesidad.
-        return "redirect:/seleccionarEstudiante"; // Redirige de nuevo a la página de selección de estudiantes
-    }
-
-
 
 
 }
