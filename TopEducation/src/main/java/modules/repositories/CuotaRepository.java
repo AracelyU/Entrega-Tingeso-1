@@ -12,7 +12,8 @@ import java.util.ArrayList;
 @Repository
 public interface CuotaRepository extends CrudRepository<CuotaEntity, Long> {
 
-    ArrayList<CuotaEntity> findCuotaEntitiesById(Long id);
+    @Query("SELECT c FROM CuotaEntity c WHERE c.generatePaymentsEntity.id = :generatePaymentId")
+    ArrayList<CuotaEntity> findCuotasByGeneratePaymentId(@Param("generatePaymentId") Long generatePaymentId);
 
 
 }

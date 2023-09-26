@@ -17,9 +17,10 @@ class CuotaServiceTest {
 
     @Test
     void testObtenerCuotasPorId() {
-        ArrayList<CuotaEntity> c = cuotaService.obtenerCuotasPorId((long) 1);
+        ArrayList<CuotaEntity> c = cuotaService.obtenerCuotasPorGeneratePaymentId((long) 1);
+        System.out.println("PASO");
         for (CuotaEntity cuotaEntity : c) {
-            assertEquals(1, cuotaEntity.getId());
+            assertEquals(1, cuotaEntity.getGeneratePaymentsEntity().getId());
         }
 
     }

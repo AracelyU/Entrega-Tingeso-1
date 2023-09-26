@@ -31,7 +31,7 @@ public class CuotaController {
 
     @PostMapping("/mostrarCuota")
     public String mostrandoCuota(@RequestParam("pago") Long id, Model model){
-        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPorId(id);
+        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPorGeneratePaymentId(id);
         model.addAttribute("cuotas", cuotas);
         ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.obtenerPagos();
         model.addAttribute("pagos", pagos);
