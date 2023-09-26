@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar</title>
+</head>
+<body>
+
+<form th:action="@{/registrarCuota}" method="POST">
+  <h5>Seleccione un Pago:</h5>
+  <label>
+    <select name="cuota" required>
+      <option value="">Selecciona un Pago</option>
+      <option th:each="cuota : ${cuotas}" th:value="${cuota.id}">
+        <span th:text="${cuota.getGeneratePaymentsEntity().getTipoPago() + ' #' + cuota.getNumeroCuota() + ' = ' + cuota.getValorCuota()}"></span>
+      </option>
+    </select>
+  </label>
+
+  <label for="montoPagar">Ingrese cuanto Pagar:</label>
+  <input type="number" id="montoPagar" name="montoPagar" value="0" required>
+
+  <input type="submit" value="Aceptar">
+</form>
+
+
+
+</body>
+</html>

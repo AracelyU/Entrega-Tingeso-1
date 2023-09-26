@@ -37,7 +37,17 @@ public class StudentController {
                                   @RequestParam("fechaNacimiento") String fechaNacimiento,
                                   @RequestParam("tipoEscuela") String tipoEscuela,
                                   @RequestParam("nombreEscuela") String nombreEscuela,
-                                  @RequestParam("anioEgreso") String anioEgreso) {
+                                  @RequestParam("anioEgreso") String anioEgreso,
+                                  Model model) {
+        /* verificar que el estudiantes esta bien
+        if(generoPago == 1){
+            model.addAttribute("mensaje", "El pago se generó con éxito.");
+        }else{
+            model.addAttribute("error", "Ha ocurrido un error al generar el pago");
+        }
+         */
+        model.addAttribute("mensaje", "El estudiante se generó con éxito.");
+
         studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, fechaNacimiento, tipoEscuela, nombreEscuela, anioEgreso);
         return "redirect:/nuevoEstudiante";
     }

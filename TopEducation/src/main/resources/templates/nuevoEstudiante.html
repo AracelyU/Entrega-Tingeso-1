@@ -9,6 +9,16 @@
 <body>
 <div class="container-sm">
     <h1>Formulario de Estudiantes</h1>
+
+    <!-- Mostrar mensaje de éxito si existe -->
+    <div th:if="${mensaje}" class="alert alert-success">
+        <p th:text="${mensaje}"></p>
+    </div>
+    <!-- Mostrar mensaje de error si existe -->
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
     <form  th:action="@{/nuevoEstudiante}" method="POST">
 
         <h1><b>Registrar nuevo Estudiante</b></h1>

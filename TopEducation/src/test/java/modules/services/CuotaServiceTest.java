@@ -18,7 +18,6 @@ class CuotaServiceTest {
     @Test
     void testObtenerCuotasPorId() {
         ArrayList<CuotaEntity> c = cuotaService.obtenerCuotasPorGeneratePaymentId((long) 1);
-        System.out.println("PASO");
         for (CuotaEntity cuotaEntity : c) {
             assertEquals(1, cuotaEntity.getGeneratePaymentsEntity().getId());
         }

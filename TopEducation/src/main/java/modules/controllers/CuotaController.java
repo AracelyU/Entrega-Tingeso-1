@@ -39,6 +39,4 @@ public class CuotaController {
         return "mostrarCuota";
     }
 
-
-
 }

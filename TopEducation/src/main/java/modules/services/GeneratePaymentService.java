@@ -19,12 +19,23 @@ public class GeneratePaymentService {
     @Autowired
     CuotaRepository cuotaRepository;
 
-    // obtener estudiantes
+    // obtener todos los pagos
     public ArrayList<GeneratePaymentsEntity> obtenerPagos(){
         return (ArrayList<GeneratePaymentsEntity>) generatePaymentRepository.findAll();
     }
 
+    // obtener las cuotas asociadas a una lista de pagos
+    public ArrayList<CuotaEntity> obtenerCuotasPorListaPagos(ArrayList<GeneratePaymentsEntity> g){
+        ArrayList<CuotaEntity> c = new ArrayList<>();
+        for(int i=0; i < g.size(); i++){
+            c.addAll(cuotaRepository.findCuotasByGeneratePaymentId(g.get(i).getId()));
+        }
+        return c;
+    }
+
     public GeneratePaymentsEntity encontrarPagoPorId(Long id){ return generatePaymentRepository.findByid(id);}
+
+    public ArrayList<GeneratePaymentsEntity> encontrarPagoPorStudentId(Long id){ return generatePaymentRepository.findByStudentId(id);}
 
     public int guardarPago(StudentEntity s, Integer numeroCuotas, String tipoPago){
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();

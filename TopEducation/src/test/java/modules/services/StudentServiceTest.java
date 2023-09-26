@@ -49,11 +49,8 @@ class StudentServiceTest {
 
     @Test
     void testEncontrarId(){
-        studentService.guardarEstudiante("987654321", "Alex", "Van",
-                "2003/05/13", "privado", "Escuela 1", "2023");
         StudentEntity nuevoEstudiante = studentService.encontrarId((long) 1);
         assertEquals("municipal", nuevoEstudiante.getTipoEscuela());
-        studentRepository.delete(nuevoEstudiante);
     }
 
 

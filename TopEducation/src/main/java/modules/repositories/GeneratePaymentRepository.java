@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
@@ -14,6 +15,10 @@ public interface GeneratePaymentRepository extends CrudRepository<GeneratePaymen
 
     @Query("select g from GeneratePaymentsEntity g where g.id = :id")
     GeneratePaymentsEntity findByid(@Param("id")Long id);
+
+    @Query("select g from GeneratePaymentsEntity g where g.student.id = :id")
+    ArrayList<GeneratePaymentsEntity> findByStudentId(@Param("id")Long id);
+
 
 
 }

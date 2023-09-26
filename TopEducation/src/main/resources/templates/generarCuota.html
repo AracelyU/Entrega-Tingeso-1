@@ -7,12 +7,17 @@
 <body>
     <div class="container">
         <h1><b>Generando Pagos</b></h1>
+
+        <!-- Mostrar mensaje de éxito si existe -->
         <div th:if="${mensaje}" class="alert alert-success">
             <p th:text="${mensaje}"></p>
         </div>
+        <!-- Mostrar mensaje de error si existe -->
         <div th:if="${error}" class="alert alert-danger">
             <p th:text="${error}"></p>
         </div>
+
+
         <form  th:action="@{/generarCuota}" method="POST">
             <hr/>
             <h5>Seleccione un Alumno:</h5>

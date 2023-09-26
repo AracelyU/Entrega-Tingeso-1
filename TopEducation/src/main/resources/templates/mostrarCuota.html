@@ -9,7 +9,6 @@
     <h1><b>Mostrando Cuotas</b></h1>
 
     <form th:action="@{/mostrarCuota}" method="POST">
-
         <h5>Seleccione un Estudiante:</h5>
         <label>
             <select name="pago" required>
@@ -30,6 +29,7 @@
             <th>Valor de Cuota</th>
             <th>Estado de Cuota</th>
             <th>Fecha de Vencimiento</th>
+            <th>Tipo de Pago</th>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +39,7 @@
             <td th:text="${cuota.valorCuota}"></td>
             <td th:text="${cuota.estadoCuota}"></td>
             <td th:text="${cuota.fechaVencimiento}"></td>
+            <td th:text="${cuota.getGeneratePaymentsEntity().getTipoPago()}"></td>
         </tr>
         </tbody>
     </table>
