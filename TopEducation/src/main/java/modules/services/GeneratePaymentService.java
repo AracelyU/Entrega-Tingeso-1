@@ -8,7 +8,9 @@ import modules.repositories.GeneratePaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class GeneratePaymentService {
@@ -34,51 +36,47 @@ public class GeneratePaymentService {
     }
 
     public GeneratePaymentsEntity encontrarPagoPorId(Long id){ return generatePaymentRepository.findByid(id);}
-
     public ArrayList<GeneratePaymentsEntity> encontrarPagoPorStudentId(Long id){ return generatePaymentRepository.findByStudentId(id);}
 
-    public int guardarPago(StudentEntity s, Integer numeroCuotas, String tipoPago){
+
+    public String verificarGuardarPago(StudentEntity s, Integer numeroCuotas, String tipoPago){
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
         if(numeroCuotas <= 0){
-            System.out.println("El numero de cuotas es nulo o negativo");
-            return -1;
+            return "El número de cuotas debe de ser positivo";
         }
-        switch (tipoPago) {
-            case "contado":
-                if(numeroCuotas != 1){
-                    System.out.println("El numero de cuotas para pago contado es distinto de 1");
-                    return -1;
+
+        if(tipoPago.equals("contado") && numeroCuotas != 1){
+            return "En pagos al contado no deben de hacer más de 1 cuota";
+        }
+
+        switch (s.getTipoEscuela()){
+            case "municipal":
+                if(numeroCuotas > 10){
+                    return "Para tipo de escuela municipal se ingreso más de 10 cuotas";
                 }
                 break;
-            case "cuotas":
-                switch (s.getTipoEscuela()) {
-                    case "municipal":
-                        if(numeroCuotas > 10){
-                            System.out.println("Para tipo de escuela municipal se ingreso más de 10 cuotas");
-                            return -1;
-                        }
-                        break;
-                    case "subvencionado":
-                        if (numeroCuotas > 7){
-                            System.out.println("Para tipo de escuela subvencionado se ingreso más de 7 cuotas");
-                            return -1;
-                        }
-                        break;
-                    case "privado":
-                        if (numeroCuotas > 4){
-                            System.out.println("Para tipo de escuela privado se ingreso más de 4 cuotas");
-                            return -1;
-                        }
-                        break;
-                    default:
-                        System.out.println("Error en tipo de escuela");
-                        return -1;
+
+            case "subvencionado":
+                if(numeroCuotas > 7){
+                    return "Para tipo de escuela subvencionado se ingreso más de 7 cuotas";
                 }
                 break;
+
+            case "privado":
+                if(numeroCuotas > 4){
+                    return "Para tipo de escuela privado se ingreso más de 4 cuotas";
+                }
+                break;
+
             default:
-                System.out.println("Error en tipo de pago");
-                return -1;
+                return "Error en tipo de escuela";
         }
+
+        return "El pago se generó con éxito.";
+    }
+
+    public void guardarPago(StudentEntity s, Integer numeroCuotas, String tipoPago){
+        GeneratePaymentsEntity g = new GeneratePaymentsEntity();
         g.setStudent(s);
         g.setTipoPago(tipoPago);
         g.setNumeroCuota(numeroCuotas);
@@ -86,11 +84,10 @@ public class GeneratePaymentService {
         if(g.getTipoPago().equals("contado")){
             g.setMontoPago((float) 750000);
         }else{
-            g.setMontoPago((float) (1500000 * (1 - descuentoAnioEgreso(g) + descuentoTipoEscuela(g))));
+            g.setMontoPago((1500000 * (1 - descuentoAnioEgreso(g) + descuentoTipoEscuela(g)))/ numeroCuotas);
         }
         generatePaymentRepository.save(g);
         generarCuotas(g);
-        return 1;
     }
 
     // los descuentos por tipo de escuela
@@ -121,6 +118,7 @@ public class GeneratePaymentService {
 
     // generar el numero de cuotas para un estudiante /* todavia no se configura la fecha*/
     private void generarCuotas(GeneratePaymentsEntity g){
+        LocalDateTime fechaActual = LocalDateTime.now();
         if(g.getTipoPago().equals("cuotas")) {
             for (int i = 1; i < g.getNumeroCuota() + 1; i++) {
                 CuotaEntity c = new CuotaEntity();
@@ -128,16 +126,24 @@ public class GeneratePaymentService {
                 c.setNumeroCuota(i);
                 c.setValorCuota(g.getMontoPago());
                 c.setGeneratePaymentsEntity(g);
+                c.setFechaVencimiento(fechaActual.plusMonths(i).withDayOfMonth(10));
                 cuotaRepository.save(c);
             }
-        }else{
+
+        }else{  // para contado
             CuotaEntity p = new CuotaEntity();
             p.setValorCuota(g.getMontoPago());
             p.setNumeroCuota(1);
+            p.setFechaVencimiento(fechaActual.plusMonths(1).withDayOfMonth(10));
             p.setEstadoCuota("pendiente");
             p.setGeneratePaymentsEntity(g);
             cuotaRepository.save(p);
         }
+    }
+
+    public int registrarPago(Long id_cuota, Float montoPagar){
+
+        return 1;
     }
 
 

@@ -25,7 +25,7 @@
                 <select name="alumno" required>
                     <option value="">Selecciona un Alumno</option>
                     <option th:each="student : ${students}" th:value="${student.id}">
-                        <span th:text="${student.nombreEstudiante + student.apellidoEstudiante}"></span>
+                        <span th:text="${student.nombreEstudiante + ' ' + student.apellidoEstudiante}"></span>
                     </option>
                 </select>
             </label>

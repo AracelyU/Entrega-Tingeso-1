@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "estudiante")
 @NoArgsConstructor
@@ -19,6 +21,7 @@ public class StudentEntity {
     private String rut;
     private String nombreEstudiante;
     private String apellidoEstudiante;
+    //private Date fechaN;     @RequesParam("") @DateTimeFormat(pattern = "yyyy-mm-dd") Date fechaN
     private String fechaNacimiento;
     private String tipoEscuela;
     private String nombreEscuela;

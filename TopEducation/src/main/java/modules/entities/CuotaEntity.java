@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -22,7 +22,9 @@ public class CuotaEntity {
     private Integer numeroCuota;
     private Float valorCuota;
     private String estadoCuota;  // puede ser listo/pendiente
-    private Date fechaVencimiento;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime fechaVencimiento;
 
 
     // para asociarlo a un pago

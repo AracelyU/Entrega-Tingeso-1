@@ -40,14 +40,11 @@ public class GeneratePaymentController {
                                  @RequestParam("numeroCuotas") Integer numeroCuotas,
                                  Model model){
         StudentEntity stu = studentService.encontrarId(id);
-        int generoPago = generatePaymentService.guardarPago(stu, numeroCuotas, opcionPago);
-        if(generoPago == 1){
-            model.addAttribute("mensaje", "El pago se generó con éxito.");
-        }else{
-            model.addAttribute("error", "Ha ocurrido un error al generar el pago");
-        } // hacer una función que haga que el mensaje String diga que tipo de error se genero
-
-        // Carga nuevamente la lista de estudiantes y retorna a la vista generarCuota
+        String mensaje = generatePaymentService.verificarGuardarPago(stu, numeroCuotas, opcionPago);
+        if(mensaje.equals("El pago se generó con éxito.")){
+            generatePaymentService.guardarPago(stu, numeroCuotas, opcionPago);
+        }
+        model.addAttribute("mensaje", mensaje);
         ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
         return "generarCuota";
@@ -65,13 +62,6 @@ public class GeneratePaymentController {
         ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id);
         ArrayList<CuotaEntity> cuotas = generatePaymentService.obtenerCuotasPorListaPagos(pagos);
         model.addAttribute("cuotas", cuotas);
-        return "registrarCuota";
-    }
-
-    @PostMapping("/registrarCuota")
-    public String registrarCuota(@RequestParam("cuota") Long id, @RequestParam("montoPagar") Float montoPagar){
-        System.out.println(id);
-        System.out.println(montoPagar);
         return "registrarCuota";
     }
 
