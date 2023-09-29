@@ -57,10 +57,12 @@ public class CuotaService {
         LocalDateTime fecha_Actual = LocalDateTime.now();
         CuotaEntity c = cuotaRepository.findCuotaEntitiesById(id);
 
+        /* COMENTADO PARA QUE NO ME LIMITE PAGAR ENTRE 5 Y 10 DE CADA MES
         // verificar si el día esta entre el día 5 y 10
-        if(fecha_Actual.getDayOfMonth() < 5 || fecha_Actual.getDayOfMonth() > 29){
+        if(fecha_Actual.getDayOfMonth() < 5 || fecha_Actual.getDayOfMonth() > 10){
             return "No se puede pagar la cuota, se puede pagar entre el día 5 y 10 de cada mes.";
         }
+        */
 
         // verificar si ha pagado la cuota anteriores antes de elegir pagar esta cuota
         // obtener todas las cuotas

@@ -1,29 +1,28 @@
 package modules.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
-/*
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "notaEstudiante")
-public class NoteEntity {
+@Table(name = "examenes")
+public class TestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
 
-    private Double nota;
+    private String rut;
+    private String fechaExamen;
+    private Float puntajeObtenido;
 
-    @ManyToOne
-    @JoinColumn(name = "idEstudiante", referencedColumnName = "id")
-    private StudentEntity estudiante;
 
 }
-*/
