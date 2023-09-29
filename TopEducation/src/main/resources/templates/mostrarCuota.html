@@ -8,7 +8,9 @@
 <div class="container">
 
     <h1><b>Mostrando Cuotas</b></h1>
-    <form th:action="@{/mostrarCuota}" method="POST">
+
+
+    <!--<form th:action="@{/mostrarCuota}" method="POST">
         <h5>Seleccione un Estudiante:</h5>
         <label>
             <select name="id_estudiante" required>
@@ -21,6 +23,7 @@
         <input type="submit" value="Mostrar Cuotas">
     </form>
     <br>
+       -->
 
     <!-- Tabla para mostrar las cuotas del estudiante -->
     <table class="table">
@@ -44,10 +47,12 @@
             <td th:text="${cuota.getGeneratePaymentsEntity().getTipoPago()}"></td>
             <td>
 
+                <!--
                 <form  th:action="@{/registrarCuota}" method="POST">
                     <input type="hidden" name="cuota_id" th:value="${cuota.id}">
                     <button type="submit" class="btn btn-primary">Pagar</button>
                 </form>
+                -->
 
             </td>
             </hr>

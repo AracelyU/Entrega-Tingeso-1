@@ -84,7 +84,7 @@ public class GeneratePaymentService {
         if(g.getTipoPago().equals("contado")){
             g.setMontoPago((float) 750000);
         }else{
-            g.setMontoPago((1500000 * (1 - descuentoAnioEgreso(g) + descuentoTipoEscuela(g)))/ numeroCuotas);
+            g.setMontoPago(1500000 * (1 - descuentoAnioEgreso(g) - descuentoTipoEscuela(g))/ numeroCuotas);
         }
         generatePaymentRepository.save(g);
         generarCuotas(g);

@@ -29,34 +29,50 @@ public class CuotaController {
 
     @GetMapping("/mostrarCuota")
     public String elegirPago(Model model){
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.obtenerPagos();
-        model.addAttribute("pagos", pagos);
-        model.addAttribute("students", estudiantes);
+        //ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        //model.addAttribute("students", estudiantes);
         return "mostrarCuota";
     }
 
     @PostMapping("/mostrarCuota")
     public String mostrandoCuota(@RequestParam("id_estudiante") Long id, Model model){
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        //ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id);
         ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPorGeneratePaymentArray(pagos);
         model.addAttribute("cuotas", cuotas);
-        model.addAttribute("students", estudiantes);
+        //model.addAttribute("students", estudiantes);
         return "mostrarCuota";
     }
 
     @PostMapping("/registrarCuota")
+    public String mostrarCuotasRegistrar(@RequestParam("id_estudiante") Long id, Model model){
+        //ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        //model.addAttribute("students", estudiantes);
+        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id);
+        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPendientesPorGeneratePaymentArray(pagos);
+        model.addAttribute("cuotas", cuotas);
+        return "registrarCuota";
+    }
+
+    @PostMapping("/pagarCuota")
     public String registrarCuota(@RequestParam("cuota_id") Long id, Model model){
 
         // hacer condicionales para ver si la cuota se paga en el tiempo correcto
+        String mensaje = cuotaService.verificarPagarCuota(id);
+        if (mensaje.equals("Se ha pagado la cuota con exito.")) {
+            cuotaService.pagarCuota(id); // cambiar estado de cuota a pagado
 
-        // cambiar estado de cuota a pagado
+        }
 
-        System.out.println(id);
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        model.addAttribute("students", estudiantes);
-        return "mostrarCuota";
+        model.addAttribute("mensaje", mensaje);
+
+        // devolver información anterior
+        Long id_estudiante = cuotaService.obtenerCuotaPorId(id).getGeneratePaymentsEntity().getStudent().getId();
+        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id_estudiante);
+        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPendientesPorGeneratePaymentArray(pagos);
+        model.addAttribute("cuotas", cuotas);
+
+        return "registrarCuota";
     }
 
 }

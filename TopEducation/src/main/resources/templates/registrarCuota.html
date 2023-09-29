@@ -5,22 +5,51 @@
     <title>Registrar</title>
 </head>
 <body>
+<h1><b>Cuotas pendientes por pagar</b></h1>
 
-<form th:action="@{/registrarCuota}" method="POST">
-  <h5>Seleccione un Pago:</h5>
-  <label>
-    <select name="cuota" required>
-      <option value="">Selecciona un Pago</option>
-      <option th:each="cuota : ${cuotas}" th:value="${cuota.id}">
-        <span th:text="${cuota.getGeneratePaymentsEntity().getTipoPago() + ' #' + cuota.getNumeroCuota() + ' = ' + cuota.getValorCuota()}"></span>
-      </option>
-    </select>
-  </label>
-
-  <input type="submit" value="Aceptar">
-</form>
+<!-- Mostrar mensaje de éxito si existe -->
+<div th:if="${mensaje}" class="alert alert-success">
+  <p th:text="${mensaje}"></p>
+</div>
+<!-- Mostrar mensaje de error si existe -->
+<div th:if="${error}" class="alert alert-danger">
+  <p th:text="${error}"></p>
+</div>
 
 
+<table class="table">
+  <thead class="thead-dark">
+  <hr>
+  <tr>
+    <th>N° de Cuota</th>
+    <th>Valor de Cuota</th>
+    <th>Estado de Cuota</th>
+    <th>Fecha de Vencimiento</th>
+    <th>Tipo de Pago</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- cuotas PENDIENTES -->
+  <tr th:each="cuota : ${cuotas}">
+    <td th:text="${cuota.numeroCuota}"></td>
+    <td th:text="${cuota.valorCuota}"></td>
+    <td th:text="${cuota.estadoCuota}"></td>
+    <td th:text="${cuota.fechaVencimiento}"></td>
+    <td th:text="${cuota.getGeneratePaymentsEntity().getTipoPago()}"></td>
+    <td>
+
+      <form  th:action="@{/pagarCuota}" method="POST">
+          <input type="hidden" name="cuota_id" th:value="${cuota.id}">
+         <!-- <input type="checkbox" name="cuota1" id="cuota1"> -->
+          <button type="submit" class="btn btn-primary">Pagar</button>
+      </form>
+
+
+    </td>
+    </hr>
+  </tr>
+  </tbody>
+</table>
 
 </body>
 </html>

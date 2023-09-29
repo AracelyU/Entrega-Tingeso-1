@@ -38,10 +38,10 @@ public class GeneratePaymentController {
     public String generandoCuota(@RequestParam("opcionPago") String opcionPago,
                                  @RequestParam("alumno") Long id,
                                  @RequestParam("numeroCuotas") Integer numeroCuotas,
-                                 Model model){
+                                 Model model) {
         StudentEntity stu = studentService.encontrarId(id);
         String mensaje = generatePaymentService.verificarGuardarPago(stu, numeroCuotas, opcionPago);
-        if(mensaje.equals("El pago se generó con éxito.")){
+        if (mensaje.equals("El pago se generó con éxito.")) {
             generatePaymentService.guardarPago(stu, numeroCuotas, opcionPago);
         }
         model.addAttribute("mensaje", mensaje);
@@ -49,21 +49,5 @@ public class GeneratePaymentController {
         model.addAttribute("students", estudiantes);
         return "generarCuota";
     }
-
-    @GetMapping("/registrarPago")
-    public String paginaRegistrarPago(Model model){
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        model.addAttribute("estudiantes", estudiantes);
-        return "registrarPago";
-    }
-
-    @PostMapping("/registrarPago")
-    public String recibirParaRegistrarPago(@RequestParam("alumno") Long id, Model model){
-        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id);
-        ArrayList<CuotaEntity> cuotas = generatePaymentService.obtenerCuotasPorListaPagos(pagos);
-        model.addAttribute("cuotas", cuotas);
-        return "registrarCuota";
-    }
-
 
 }

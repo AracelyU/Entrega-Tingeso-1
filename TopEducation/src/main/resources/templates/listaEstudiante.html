@@ -7,7 +7,11 @@
 </head>
 <body>
 <div class="container-sm">
+
     <h1>Listado de Estudiantes</h1>
+    <a class="btn btn-secondary" href="http://localhost:8090/nuevoEstudiante" role="button">Añadir Estudiante</a>
+
+    <hr>
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -31,13 +35,22 @@
             <td th:text="${student.nombreEscuela}"></td>
             <td th:text="${student.anioEgreso}"></td>
             <td>
-                <a class="btn btn-primary" href="#" role="button">Editar</a>
-                <a class="btn btn-danger" href="#" role="button">Eliminar</a>
+
+                <form  th:action="@{/mostrarCuota}" method="POST">
+                    <input type="hidden" name="id_estudiante" th:value="${student.id}">
+                    <button type="submit" class="btn btn-primary">Mostrar Cuotas</button>
+                </form>
+
+                <form  th:action="@{/registrarCuota}" method="POST">
+                    <input type="hidden" name="id_estudiante" th:value="${student.id}">
+                    <button type="submit" class="btn btn-primary">Pagar Cuotas</button>
+                </form>
+
+                <a class="btn btn-info" href="#" role="button">Editar</a>
+                <a class="btn btn-secondary" href="#" role="button">Eliminar</a>
 
             </td>
         </tr>
-
-        <a href="http://localhost:8090/nuevoEstudiante" class="button">Añadir Estudiante</a>
 
         </tbody>
     </table>
