@@ -6,6 +6,15 @@
 </head>
 <body>
 
+<!-- Mostrar mensaje de éxito si existe -->
+<div th:if="${mensaje}" class="alert alert-success">
+    <p th:text="${mensaje}"></p>
+</div>
+<!-- Mostrar mensaje de error si existe -->
+<div th:if="${error}" class="alert alert-danger">
+    <p th:text="${error}"></p>
+</div>
+
 <div class="container">
     <h1><b>Cargar el archivo de datos</b></h1>
     <form th:action="@{/cargarCSV}" method="POST" enctype="multipart/form-data">
@@ -16,7 +25,7 @@
                type="submit" value="Cargar el archivo a la Base de Datos">
     </form>
     <br>
-    <u><b> <h2 th:text="${mensaje}"></h2></b></u>
+    <!--<u><b> <h2 th:text="${mensaje}"></h2></b></u>-->
 </div>
 
 <div class = "form1">

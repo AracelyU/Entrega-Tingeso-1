@@ -29,9 +29,16 @@ public class TestService {
         return (ArrayList<TestEntity>) testRepository.findAll();
     }
 
+
+    // la función guardar es para traer a la carpeta src los archivos seleccionados
     @Generated
     public String guardar(MultipartFile file){
         String filename = file.getOriginalFilename();
+
+        if(!filename.toLowerCase().contains(".csv")){
+            return "No ingreso un archivo csv";
+        }
+
         if(filename != null){
             if(!file.isEmpty()){
                 try{
@@ -52,10 +59,15 @@ public class TestService {
     }
 
     @Generated
-    public void leerCsv(String direccion){
+    public String leerCsv(String direccion){
         String texto = "";
         BufferedReader bf = null;
-        testRepository.deleteAll();
+        //testRepository.deleteAll();
+
+        if(!direccion.toLowerCase().contains(".csv")){
+            return "No ingreso un archivo csv";
+        }
+
         try{
             bf = new BufferedReader(new FileReader(direccion));
             String temp = "";
@@ -66,14 +78,14 @@ public class TestService {
                     count = 0;
                 }
                 else{
-                    guardarDataDB(bfRead.split(";")[0], bfRead.split(";")[1], bfRead.split(";")[2]);
+                    guardarDataDB(bfRead.split(";")[0], bfRead.split(";")[1], bfRead.split(";")[2], direccion);
                     temp = temp + "\n" + bfRead;
                 }
             }
             texto = temp;
-            System.out.println("Archivo leido exitosamente");
+            return "Archivo leido exitosamente";
         }catch(Exception e){
-            System.err.println("No se encontro el archivo");
+            return "No se encontro el archivo";
         }finally{
             if(bf != null){
                 try{
@@ -85,16 +97,14 @@ public class TestService {
         }
     }
 
-    public void guardarData(TestEntity data){
-        testRepository.save(data);
-    }
 
-    public void guardarDataDB(String rut, String fechaExamen, String puntajeObtenido){
+    public void guardarDataDB(String rut, String fechaExamen, String puntajeObtenido, String direccion){
         TestEntity newData = new TestEntity();
         newData.setRut(rut);
         newData.setFechaExamen(fechaExamen);
         newData.setPuntajeObtenido(Float.valueOf(puntajeObtenido));
-        guardarData(newData);
+        newData.setNombrePrueba(direccion.replaceAll("\\.csv$", "")); // se quita la extensión del string
+        testRepository.save(newData);
     }
     public void eliminarData(ArrayList<TestEntity> datas){
         testRepository.deleteAll(datas);

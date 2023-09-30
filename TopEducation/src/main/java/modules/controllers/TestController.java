@@ -20,17 +20,19 @@ public class TestController{
         private TestService testService;
 
         @GetMapping("/cargarCSV")
-        public String main() {
+        public String main(Model model) {
+            model.addAttribute("mensaje", "Seleccione archivo a cargar");
             return "cargarCSV";
         }
 
         @PostMapping("/cargarCSV")
-        public String upload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+        public String upload(@RequestParam("file") MultipartFile file, Model model) {
             testService.guardar(file);
             String filename = file.getOriginalFilename();
-            redirectAttributes.addFlashAttribute("mensaje", "¡Archivo cargado correctamente!");
-            testService.leerCsv(filename);
-            return "redirect:/cargarCSV";
+            //redirectAttributes.addFlashAttribute("mensaje", "¡Archivo cargado correctamente!");
+            String mensaje = testService.leerCsv(filename);
+            model.addAttribute("mensaje", mensaje);
+            return "cargarCSV";
         }
 
         @GetMapping("/fileInformation")

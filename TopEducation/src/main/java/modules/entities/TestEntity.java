@@ -23,6 +23,7 @@ public class TestEntity {
     private String rut;
     private String fechaExamen;
     private Float puntajeObtenido;
+    private String nombrePrueba;
 
 
 }
