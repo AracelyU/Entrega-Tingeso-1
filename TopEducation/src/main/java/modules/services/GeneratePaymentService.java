@@ -147,6 +147,14 @@ public class GeneratePaymentService {
     }
 
 
+    // para generar reporte
+    public void generarReporte(){
+
+
+
+    }
+
+
 
 
 

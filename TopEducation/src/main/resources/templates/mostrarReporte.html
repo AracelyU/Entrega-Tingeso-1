@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mostrar Reporte</title>
+</head>
+<body>
+
+
+<h1>Listado de Estudiantes</h1>
+<a class="btn btn-secondary" href="http://localhost:8090/nuevoEstudiante" role="button">Añadir Estudiante</a>
+
+<hr>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th>ID</th>
+        <th>RUT</th>
+        <th>Nombre Estudiante</th>
+        <th>Nro Examenes Rendidos</th>
+        <th>Monto Total Del Arancel A Pagar</th>
+        <th>Tipo Pago</th>
+        <th>Nro Total De Cuotas Pactadas</th>
+        <th>Nro Cuotas Pagadas</th>
+        <th>Monto Total Pagado</th>
+        <th>Fecha Último Pago</th>
+        <th>Saldo Por Pagar</th>
+        <th>Nro Cuotas Con Retraso</th>
+    </tr>
+    </thead>
+    <tbody> <!-- arreglar variables -->
+    <tr th:each="student : ${students}">
+        <td th:text="${student.id}"></td>
+        <td th:text="${student.rut}"></td>
+        <td th:text="${student.nombreEstudiante}"></td>
+        <td th:text="${student.apellidoEstudiante}"></td>
+        <td th:text="${student.tipoEscuela}"></td>
+        <td th:text="${student.nombreEscuela}"></td>
+        <td th:text="${student.anioEgreso}"></td>
+
+    </tr>
+
+    </tbody>
+</table>
+
+
+</body>
+</html>

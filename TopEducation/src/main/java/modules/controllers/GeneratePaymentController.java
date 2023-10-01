@@ -50,4 +50,23 @@ public class GeneratePaymentController {
         return "generarCuota";
     }
 
+
+
+    @GetMapping("/generarReporte")
+    public String generandoReporte(Model model){
+        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        model.addAttribute("students", estudiantes);
+        return "generarReporte";
+
+    }
+
+    @PostMapping("/generarReporte")
+    public String mostrandoReporte(@RequestParam("id_estudiante") Long id, Model model){
+
+
+
+        return "mostrarReporte";
+    }
+
+
 }

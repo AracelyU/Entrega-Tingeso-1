@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generar Reporte</title>
+</head>
+<body>
+
+<form th:action="@{/generarReporte}" method="POST">
+    <h5>Seleccione un Estudiante:</h5>
+    <label>
+        <select name="id_estudiante" required>
+            <option value="">Selecciona un Estudiante</option>
+            <option th:each="student : ${students}" th:value="${student.id}">
+                <span th:text="${student.nombreEstudiante + ' ' + student.apellidoEstudiante + ' '}"></span>
+            </option>
+        </select>
+    </label>
+    <input type="submit" value="Generar Reporte">
+</form>
+
+<br>
+
+</body>
+</html>

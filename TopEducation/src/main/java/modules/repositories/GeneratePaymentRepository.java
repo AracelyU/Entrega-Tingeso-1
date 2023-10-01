@@ -13,9 +13,13 @@ import java.util.Optional;
 @Repository
 public interface GeneratePaymentRepository extends CrudRepository<GeneratePaymentsEntity, Long> {
 
+
+    // encontrar pago por su id
     @Query("select g from GeneratePaymentsEntity g where g.id = :id")
     GeneratePaymentsEntity findByid(@Param("id")Long id);
 
+
+    // encontrar pagos por id de estudiante
     @Query("select g from GeneratePaymentsEntity g where g.student.id = :id")
     ArrayList<GeneratePaymentsEntity> findByStudentId(@Param("id")Long id);
 
