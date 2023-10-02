@@ -83,6 +83,7 @@ public class CuotaService {
     // cambia el estado de la cuota a un estado ya pagado
     public void pagarCuota(Long id){
         CuotaEntity c = cuotaRepository.findCuotaEntitiesById(id);
+        c.getGeneratePaymentsEntity().setPagado(c.getValorCuota());
         c.setEstadoCuota("pagado");
         c.setValorCuota((float) 0);
         cuotaRepository.save(c);

@@ -1,6 +1,7 @@
 package modules.services;
 
 import lombok.Generated;
+import modules.entities.StudentEntity;
 import modules.entities.TestEntity;
 import modules.repositories.TestRepository;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -34,11 +36,9 @@ public class TestService {
     @Generated
     public String guardar(MultipartFile file){
         String filename = file.getOriginalFilename();
-
         if(!filename.toLowerCase().contains(".csv")){
             return "No ingreso un archivo csv";
         }
-
         if(filename != null){
             if(!file.isEmpty()){
                 try{
@@ -63,11 +63,9 @@ public class TestService {
         String texto = "";
         BufferedReader bf = null;
         //testRepository.deleteAll();
-
         if(!direccion.toLowerCase().contains(".csv")){
             return "No ingreso un archivo csv";
         }
-
         try{
             bf = new BufferedReader(new FileReader(direccion));
             String temp = "";
@@ -109,6 +107,19 @@ public class TestService {
     public void eliminarData(ArrayList<TestEntity> datas){
         testRepository.deleteAll(datas);
     }
+
+    public Float obtenerTodoPromedio(String rut){
+        return testRepository.findAllPuntajePromedio(rut);
+    }
+
+    public int numeroPruebas(String rut){
+        return testRepository.findNumeroPruebas(rut);
+    }
+
+
+
+
+
 
 }
 

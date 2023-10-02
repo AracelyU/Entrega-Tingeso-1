@@ -27,7 +27,7 @@ public class TestController{
 
         @PostMapping("/cargarCSV")
         public String upload(@RequestParam("file") MultipartFile file, Model model) {
-            //testService.guardar(file);
+            testService.guardar(file);
             String filename = file.getOriginalFilename();
             //redirectAttributes.addFlashAttribute("mensaje", "¡Archivo cargado correctamente!");
             String mensaje = testService.leerCsv(filename);

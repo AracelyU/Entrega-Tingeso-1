@@ -5,12 +5,16 @@ import modules.entities.GeneratePaymentsEntity;
 import modules.entities.StudentEntity;
 import modules.repositories.CuotaRepository;
 import modules.repositories.GeneratePaymentRepository;
+import modules.repositories.StudentRepository;
+import modules.repositories.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class GeneratePaymentService {
@@ -20,6 +24,13 @@ public class GeneratePaymentService {
 
     @Autowired
     CuotaRepository cuotaRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    TestRepository testRepository;
+
 
     // obtener todos los pagos
     public ArrayList<GeneratePaymentsEntity> obtenerPagos(){
@@ -81,6 +92,7 @@ public class GeneratePaymentService {
         g.setTipoPago(tipoPago);
         g.setNumeroCuota(numeroCuotas);
         g.setMatricula((float) 70000);
+        g.setPagado(0F);  // comienza con cero
         if(g.getTipoPago().equals("contado")){
             g.setMontoPago((float) 750000);
         }else{
@@ -141,10 +153,45 @@ public class GeneratePaymentService {
         }
     }
 
-    public int registrarPago(Long id_cuota, Float montoPagar){
-
-        return 1;
+    public Float faltaPagar(GeneratePaymentsEntity g){
+        ArrayList<CuotaEntity> c = cuotaRepository.findCuotasPendientesByGeneratePaymentId(g.getId());
+        Float monto = (float) 0;
+        for(CuotaEntity cuotas : c){
+            monto+= cuotas.getValorCuota();  // lo que ya estan pagados suman 0
+        }
+        return monto;
     }
+
+    public Float descuentoPuntajePromedio(Float puntaje){
+        if(puntaje < 850){
+            return (float) 0;
+        }else if (puntaje < 899){
+            return 0.02F;
+        }else if (puntaje < 949){
+            return 0.05F;
+        }else{
+            return 0.1F;
+        }
+    }
+
+
+    public void aplicarDescuentoPrueba(){
+        ArrayList<StudentEntity> estudiantes = (ArrayList<StudentEntity>) studentRepository.findAll();
+        for(StudentEntity s : estudiantes){
+            ArrayList<GeneratePaymentsEntity> pagos = generatePaymentRepository.findByStudentId(s.getId());
+            for(GeneratePaymentsEntity g : pagos){
+                ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotasPendientesByGeneratePaymentId(g.getId());
+                Float puntaje = testRepository.findPuntajePromedio(s.getRut());
+
+                for(CuotaEntity c : cuotas){
+                    c.setValorCuota( c.getValorCuota() * (1 - descuentoPuntajePromedio(puntaje)));
+                    cuotaRepository.save(c);
+                }
+            }
+        }
+    }
+
+
 
 
     // para generar reporte

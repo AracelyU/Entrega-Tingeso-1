@@ -23,11 +23,14 @@
         <br>
         <input class = "btn btn-primary"
                type="submit" value="Cargar el archivo a la Base de Datos">
-
-        <input class="btn btn-primary"
-               type="submit" value="Aplicar tasa de descuentos a cuotas">
     </form>
     <br>
+
+    <form  th:action="@{/aplicarPuntaje}" method="POST">
+        <button type="submit" class="btn btn-primary">Aplicar Puntaje</button>
+    </form>
+
+
     <!--<u><b> <h2 th:text="${mensaje}"></h2></b></u>-->
 </div>
 
@@ -35,8 +38,8 @@
     <h5><b>Recuerde que debe cargar un archivo Excel de extensión .csv!</b></h5>
 </div>
 
-<div class = "form1">
-    <h5><b>Recuerde que debe cargar un archivo Excel de extensión .csv!</b></h5>
+<div class = "form2">
+    <h5><b>Solo preciones 'Aplicar Puntaje' cuando haya ingresado todos los excel</b></h5>
 </div>
 
 

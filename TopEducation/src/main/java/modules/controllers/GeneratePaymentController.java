@@ -6,6 +6,7 @@ import modules.entities.StudentEntity;
 import modules.services.CuotaService;
 import modules.services.GeneratePaymentService;
 import modules.services.StudentService;
+import modules.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,9 @@ public class GeneratePaymentController {
 
     @Autowired
     private CuotaService cuotaService;
+
+    @Autowired
+    private TestService testService;
 
     @GetMapping("/generarCuota")
     public String generarCuota(Model model) {
@@ -62,10 +66,20 @@ public class GeneratePaymentController {
 
     @PostMapping("/generarReporte")
     public String mostrandoReporte(@RequestParam("id_estudiante") Long id, Model model){
+        StudentEntity s = studentService.encontrarId(id); // obtener estudiante
+        Integer nro_examenes_rendidos = testService.numeroPruebas(s.getRut());
+        Float puntaje_promedio = testService.obtenerTodoPromedio(s.getRut());
 
+        Float falta_pagar; // falta hacer una función que vea al atributo pagado de pagos
 
 
         return "mostrarReporte";
+    }
+
+    @PostMapping("/aplicarPuntaje")
+    public String aplicandoPuntaje(){
+        generatePaymentService.aplicarDescuentoPrueba();
+        return "cargarCSV";
     }
 
 
