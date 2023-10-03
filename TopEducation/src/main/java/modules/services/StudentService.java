@@ -5,7 +5,9 @@ import modules.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -19,17 +21,17 @@ public class StudentService {
         return (ArrayList<StudentEntity>) studentRepository.findAll();
     }
 
-    // guardar estudiante
+    // guardar estudiante en BD
     public void guardarEstudiante(String rut, String nombreEstudiante, String apellidoEstudiante,
-                                  String fechaNacimiento, String tipoEscuela, String nombreEscuela, String anioEgreso){
+                                  LocalDate fechaNacimiento, String tipoEscuela, String nombreEscuela, String anioEgreso){
         StudentEntity student = new StudentEntity();
         student.setRut(rut);
-        student.setNombreEstudiante(nombreEstudiante);
-        student.setApellidoEstudiante(apellidoEstudiante);
-        student.setFechaNacimiento(fechaNacimiento);
-        student.setTipoEscuela(tipoEscuela);
-        student.setNombreEscuela(nombreEscuela);
-        student.setAnioEgreso(anioEgreso);
+        student.setNombre_estudiante(nombreEstudiante);
+        student.setApellido_estudiante(apellidoEstudiante);
+        student.setFecha_nacimiento(fechaNacimiento);
+        student.setTipo_escuela(tipoEscuela);
+        student.setNombre_escuela(nombreEscuela);
+        student.setAnio_egreso(anioEgreso);
         studentRepository.save(student);
     }
 
@@ -39,7 +41,7 @@ public class StudentService {
         return studentRepository.findByRut(rut);
     }
 
-    // encontrar estudiante por id
+    // encontrar estudiante por su id
     public StudentEntity encontrarId(Long id){ return studentRepository.findByid(id); }
 
 

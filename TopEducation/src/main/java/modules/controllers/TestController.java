@@ -35,12 +35,16 @@ public class TestController{
             return "cargarCSV";
         }
 
+
+        /*
         @GetMapping("/fileInformation")
         public String listar(Model model) {
             ArrayList<TestEntity> datas = testService.obtenerData();
             model.addAttribute("datas", datas);
             return "fileInformation";
         }
+
+         */
 
 
 

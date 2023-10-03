@@ -17,15 +17,14 @@
             <p th:text="${error}"></p>
         </div>
 
-
-        <form  th:action="@{/generarCuota}" method="POST">
+        <form  th:action="@{/generarPago}" method="POST">
             <hr/>
             <h5>Seleccione un Alumno:</h5>
             <label>
                 <select name="alumno" required>
                     <option value="">Selecciona un Alumno</option>
                     <option th:each="student : ${students}" th:value="${student.id}">
-                        <span th:text="${student.nombreEstudiante + ' ' + student.apellidoEstudiante}"></span>
+                        <span th:text="${student.getNombre_estudiante() + ' ' + student.getApellido_estudiante()}"></span>
                     </option>
                 </select>
             </label>

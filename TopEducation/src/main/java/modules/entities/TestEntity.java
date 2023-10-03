@@ -21,9 +21,12 @@ public class TestEntity {
     private Long id;
 
     private String rut;
-    private String fechaExamen;
-    private Float puntajeObtenido;
-    private String nombrePrueba;
+
+    private String fecha_examen;
+
+    private Float puntaje_obtenido;
+
+    private String nombre_prueba;
 
 
 }

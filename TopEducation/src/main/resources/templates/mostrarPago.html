@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mostrar Cuotas</title>
+    <title>Mostrar Pago</title>
 </head>
 <body>
 <div class="container">
 
-    <h1><b>Mostrando Cuotas</b></h1>
+    <h1><b>Mostrando Pagos</b></h1>
 
 
     <!--<form th:action="@{/mostrarCuota}" method="POST">
@@ -34,17 +34,20 @@
             <th>Valor de Cuota</th>
             <th>Estado de Cuota</th>
             <th>Fecha de Vencimiento</th>
+            <th>Fecha Pago </th>
             <th>Tipo de Pago</th>
+
         </tr>
         </thead>
         <tbody>
         <!-- Aquí puedes iterar sobre las cuotas del estudiante y mostrarlas en la tabla -->
         <tr th:each="cuota : ${cuotas}">
-            <td th:text="${cuota.numeroCuota}"></td>
-            <td th:text="${cuota.valorCuota}"></td>
-            <td th:text="${cuota.estadoCuota}"></td>
-            <td th:text="${cuota.fechaVencimiento}"></td>
-            <td th:text="${cuota.getGeneratePaymentsEntity().getTipoPago()}"></td>
+            <td th:text="${cuota.getNumero_cuota()}"></td>
+            <td th:text="${cuota.getValor_cuota()}"></td>
+            <td th:text="${cuota.getEstado_cuota()}"></td>
+            <td th:text="${cuota.getFecha_vencimiento()}"></td>
+            <td th:text="${cuota.getFecha_pago()}"></td>
+            <td th:text="${cuota.getPago().getTipo_pago()}"></td>
             <td>
 
                 <!--

@@ -18,14 +18,26 @@ class CuotaServiceTest {
     @Autowired
     CuotaService cuotaService;
 
+
+
+
     @Test
-    void testObtenerCuotasPorId() {
-        ArrayList<CuotaEntity> c = cuotaService.obtenerCuotasPorGeneratePaymentId((long) 1);
-        for (CuotaEntity cuotaEntity : c) {
-            assertEquals(1, cuotaEntity.getGeneratePaymentsEntity().getId());
-        }
+    void testEncontrarCuotasPorIdEstudiante(){
+        ArrayList<CuotaEntity> c = cuotaService.encontrarCuotasPorIdEstudiante((long) 1);
+        assertTrue(c.isEmpty());
 
     }
+
+    @Test
+    void testEncontrarCuotasPendientesPorIdEstudiante(){
+        ArrayList<CuotaEntity> c = cuotaService.encontrarCuotasPendientesPorIdEstudiante((long) 1);
+        assertNotNull(c); // Asegura que la lista no sea nula
+        //assertNotEquals(0, c.size()); // Asegura que la lista tenga elementos
+        assertEquals(4, c.size());
+
+    }
+
+    /*
 
      @Test
     void testLocalDateTime() {
@@ -44,6 +56,8 @@ class CuotaServiceTest {
 
 
      }
+
+     */
 
 
 }

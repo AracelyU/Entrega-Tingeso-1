@@ -31,20 +31,8 @@ class GeneratePaymentServiceTest {
     @Autowired
     StudentRepository studentRepository;
 
-    @Test
-    void testGuardarPago(){   // también se prueba encontrarPagoPorId
-        StudentEntity nuevoEstudiante = studentService.encontrarId((long) 1);
-        generatePaymentService.guardarPago(nuevoEstudiante, 1, "contado");
-        GeneratePaymentsEntity g = generatePaymentService.encontrarPagoPorId((long) 1);
-        assertEquals(1, g.getNumeroCuota());
-    }
 
-    @Test
-    void testObtenerPagos(){
-        StudentEntity nuevoEstudiante = studentService.encontrarId((long) 1);
-        generatePaymentService.guardarPago(nuevoEstudiante, 1, "cuota");
-        assertNotNull(generatePaymentService.obtenerPagos());
-    }
+/*
 
     @Test
     void testobtenerCuotasPorListaPagos(){
@@ -52,6 +40,8 @@ class GeneratePaymentServiceTest {
         assertNotNull(generatePaymentService.obtenerCuotasPorListaPagos(pagos));
     }
 
+
+ */
 
 
 

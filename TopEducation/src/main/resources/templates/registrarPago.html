@@ -31,19 +31,20 @@
   <tbody>
   <!-- cuotas PENDIENTES -->
   <tr th:each="cuota : ${cuotas}">
-    <td th:text="${cuota.numeroCuota}"></td>
-    <td th:text="${cuota.valorCuota}"></td>
-    <td th:text="${cuota.estadoCuota}"></td>
-    <td th:text="${cuota.fechaVencimiento}"></td>
-    <td th:text="${cuota.getGeneratePaymentsEntity().getTipoPago()}"></td>
+    <td th:text="${cuota.getNumero_cuota()}"></td>
+    <td th:text="${cuota.getValor_cuota()}"></td>
+    <td th:text="${cuota.getEstado_cuota()}"></td>
+    <td th:text="${cuota.getFecha_vencimiento()}"></td>
+    <td th:text="${cuota.getPago().getTipo_pago()}"></td>
     <td>
+
+
 
       <form  th:action="@{/pagarCuota}" method="POST">
           <input type="hidden" name="cuota_id" th:value="${cuota.id}">
-         <!-- <input type="checkbox" name="cuota1" id="cuota1"> -->
-          <button type="submit" class="btn btn-primary">Pagar</button>
+          <!--<input type="checkbox" name="cuota1" id="cuota1">-->
+          <button type="submit" class="btn btn-primary">Pagado</button>
       </form>
-
 
     </td>
     </hr>

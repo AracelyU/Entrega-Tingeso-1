@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import modules.services.StudentService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Controller
 @RequestMapping
@@ -16,7 +18,6 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-    private GeneratePaymentService generatePaymentService;
 
     @GetMapping("/listaEstudiante")
     public String listar(Model model) {
@@ -34,20 +35,14 @@ public class StudentController {
     public String nuevoEstudiante(@RequestParam("rut") String rut,
                                   @RequestParam("nombreEstudiante") String nombreEstudiante,
                                   @RequestParam("apellidoEstudiante") String apellidoEstudiante,
-                                  @RequestParam("fechaNacimiento") String fechaNacimiento,
+                                  @RequestParam("fechaNacimiento") LocalDate fechaNacimiento,
                                   @RequestParam("tipoEscuela") String tipoEscuela,
                                   @RequestParam("nombreEscuela") String nombreEscuela,
                                   @RequestParam("anioEgreso") String anioEgreso,
                                   Model model) {
-        /* verificar que el estudiantes esta bien
-        if(generoPago == 1){
-            model.addAttribute("mensaje", "El pago se generó con éxito.");
-        }else{
-            model.addAttribute("error", "Ha ocurrido un error al generar el pago");
-        }
-         */
-        model.addAttribute("mensaje", "El estudiante se generó con éxito.");
 
+        // verificar que el estudiantes esta bien
+        model.addAttribute("mensaje", "El estudiante se generó con éxito.");
         studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, fechaNacimiento, tipoEscuela, nombreEscuela, anioEgreso);
         return "redirect:/nuevoEstudiante";
     }

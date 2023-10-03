@@ -6,43 +6,25 @@
 </head>
 <body>
 
-
-<h1>Listado de Estudiantes</h1>
-<a class="btn btn-secondary" href="http://localhost:8090/nuevoEstudiante" role="button">Añadir Estudiante</a>
-
+<h1>Reporte Estudiante</h1>
 <hr>
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th>ID</th>
-        <th>RUT</th>
-        <th>Nombre Estudiante</th>
-        <th>Nro Examenes Rendidos</th>
-        <th>Monto Total Del Arancel A Pagar</th>
-        <th>Tipo Pago</th>
-        <th>Nro Total De Cuotas Pactadas</th>
-        <th>Nro Cuotas Pagadas</th>
-        <th>Monto Total Pagado</th>
-        <th>Fecha Último Pago</th>
-        <th>Saldo Por Pagar</th>
-        <th>Nro Cuotas Con Retraso</th>
-    </tr>
-    </thead>
-    <tbody> <!-- arreglar variables -->
-    <tr th:each="student : ${students}">
-        <td th:text="${student.id}"></td>
-        <td th:text="${student.rut}"></td>
-        <td th:text="${student.nombreEstudiante}"></td>
-        <td th:text="${student.apellidoEstudiante}"></td>
-        <td th:text="${student.tipoEscuela}"></td>
-        <td th:text="${student.nombreEscuela}"></td>
-        <td th:text="${student.anioEgreso}"></td>
 
-    </tr>
-
-    </tbody>
-</table>
-
+<ul>
+    <!-- Iterar a través de los pagos y mostrar cada uno en un elemento de lista -->
+    <li th:each="pago : ${pagos}">
+        <p>RUT: <span th:text="${pago.getEstudiante().getRut()}"></span></p>
+        <p>Nombre Estudiante: <span th:text="${pago.getEstudiante().getNombre_estudiante() + ' ' + pago.getEstudiante().getApellido_estudiante()}"></span></p>
+        <p>Nro Examenes Rendidos: <span th:text="${nro_pruebas}"></span></p>
+        <p>Promedio Puntaje Exámenes: <span th:text="${puntaje_promedio}"></span></p>
+        <p>Monto Total Del Arancel A Pagar: <span th:text="${pago.getMonto_total_aracel()}"></span></p>
+        <p>Tipo Pago: <span th:text="${pago.getTipo_pago()}"></span></p>
+        <p>Nro Total De Cuotas Pactadas: <span th:text="${pago.getNumero_cuota()}"></span></p>
+        <p>Nro Cuotas Pagadas: <span th:text="${cuotas_pagadas}"></span></p>
+        <p>Monto Total Pagado: <span th:text="${pago.getUltimo_pago()}"></span></p>
+        <p>Saldo Por Pagar: <span th:text="${saldo_pagar}"></span></p>
+        <!-- faltan cuotas con retraso -->
+    </li>
+</ul>
 
 </body>
 </html>

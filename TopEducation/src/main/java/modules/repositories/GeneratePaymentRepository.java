@@ -19,9 +19,10 @@ public interface GeneratePaymentRepository extends CrudRepository<GeneratePaymen
     GeneratePaymentsEntity findByid(@Param("id")Long id);
 
 
-    // encontrar pagos por id de estudiante
-    @Query("select g from GeneratePaymentsEntity g where g.student.id = :id")
-    ArrayList<GeneratePaymentsEntity> findByStudentId(@Param("id")Long id);
+    // encontrar pago por id de estudiante
+    @Query("select g from GeneratePaymentsEntity g where g.estudiante.id = :id")
+    GeneratePaymentsEntity findByStudentId(@Param("id")Long id);
+
 
 
 

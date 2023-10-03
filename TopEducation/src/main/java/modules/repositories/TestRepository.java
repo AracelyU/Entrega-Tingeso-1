@@ -11,15 +11,11 @@ import java.util.ArrayList;
 @Repository
 public interface TestRepository extends CrudRepository<TestEntity, Long> {
 
-    @Query(value = "select e from examenes e where e.rut = :rut and e.fecha =:fecha limit 1", nativeQuery = true)
-    TestEntity findExamen(@Param("rut") String rut, @Param("fecha") String fecha);
-
-
     // obtener el promedio de los ultimos examenes de un estudiante
     @Query(value = "SELECT avg(e.puntaje_obtenido) FROM examenes e WHERE e.rut = :rut AND e.fecha_examen = (SELECT MAX(e.fecha_examen) FROM examenes e WHERE e.rut = :rut)", nativeQuery = true)
     Float findPuntajePromedio(@Param("rut") String rut);
 
-    // obtener el promedio de todos los examenes de un estudiante
+    // obtener el promedio de todos los examenes que dio un estudiante
     @Query(value = "SELECT avg(e.puntaje_obtenido) FROM examenes e WHERE e.rut = :rut", nativeQuery = true)
     Float findAllPuntajePromedio(@Param("rut") String rut);
 

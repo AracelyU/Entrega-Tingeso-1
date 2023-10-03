@@ -19,6 +19,7 @@
             <th>RUT</th>
             <th>Nombre</th>
             <th>Apellido</th>
+            <th>Fecha Nacimiento</th>
             <th>Tipo de Escuela</th>
             <th>Nombre de la Escuela</th>
             <th>Año de egreso</th>
@@ -29,19 +30,20 @@
         <tr th:each="student : ${students}">
             <td th:text="${student.id}"></td>
             <td th:text="${student.rut}"></td>
-            <td th:text="${student.nombreEstudiante}"></td>
-            <td th:text="${student.apellidoEstudiante}"></td>
-            <td th:text="${student.tipoEscuela}"></td>
-            <td th:text="${student.nombreEscuela}"></td>
-            <td th:text="${student.anioEgreso}"></td>
+            <td th:text="${student.getNombre_estudiante()}"></td>
+            <td th:text="${student.getApellido_estudiante()}"></td>
+            <td th:text="${student.getFecha_nacimiento()}"></td>
+            <td th:text="${student.getTipo_escuela()}"></td>
+            <td th:text="${student.getNombre_escuela()}"></td>
+            <td th:text="${student.getAnio_egreso()}"></td>
             <td>
 
-                <form  th:action="@{/mostrarCuota}" method="POST">
+                <form  th:action="@{/mostrarPago}" method="POST">
                     <input type="hidden" name="id_estudiante" th:value="${student.id}">
                     <button type="submit" class="btn btn-primary">Mostrar Cuotas</button>
                 </form>
 
-                <form  th:action="@{/registrarCuota}" method="POST">
+                <form  th:action="@{/registrarPago}" method="POST">
                     <input type="hidden" name="id_estudiante" th:value="${student.id}">
                     <button type="submit" class="btn btn-primary">Pagar Cuotas</button>
                 </form>

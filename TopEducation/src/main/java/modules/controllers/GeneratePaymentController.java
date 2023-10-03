@@ -1,6 +1,5 @@
 package modules.controllers;
 
-import modules.entities.CuotaEntity;
 import modules.entities.GeneratePaymentsEntity;
 import modules.entities.StudentEntity;
 import modules.services.CuotaService;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Controller
@@ -25,40 +25,36 @@ public class GeneratePaymentController {
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private CuotaService cuotaService;
 
     @Autowired
     private TestService testService;
 
-    @GetMapping("/generarCuota")
+    @GetMapping("/generarPago")
     public String generarCuota(Model model) {
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        ArrayList<StudentEntity> estudiantes = generatePaymentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
-        return "generarCuota";
+        return "generarPago";
     }
 
-    @PostMapping("/generarCuota")
+    @PostMapping("/generarPago")
     public String generandoCuota(@RequestParam("opcionPago") String opcionPago,
                                  @RequestParam("alumno") Long id,
                                  @RequestParam("numeroCuotas") Integer numeroCuotas,
                                  Model model) {
-        StudentEntity stu = studentService.encontrarId(id);
-        String mensaje = generatePaymentService.verificarGuardarPago(stu, numeroCuotas, opcionPago);
+        String mensaje = generatePaymentService.verificarGuardarPago(id, numeroCuotas, opcionPago);
         if (mensaje.equals("El pago se generó con éxito.")) {
-            generatePaymentService.guardarPago(stu, numeroCuotas, opcionPago);
+            generatePaymentService.guardarPago(id, numeroCuotas, opcionPago);
         }
         model.addAttribute("mensaje", mensaje);
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        ArrayList<StudentEntity> estudiantes = generatePaymentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
-        return "generarCuota";
+        return "generarPago";
     }
-
 
 
     @GetMapping("/generarReporte")
     public String generandoReporte(Model model){
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        ArrayList<StudentEntity> estudiantes = generatePaymentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
         return "generarReporte";
 
@@ -66,21 +62,32 @@ public class GeneratePaymentController {
 
     @PostMapping("/generarReporte")
     public String mostrandoReporte(@RequestParam("id_estudiante") Long id, Model model){
-        StudentEntity s = studentService.encontrarId(id); // obtener estudiante
-        Integer nro_examenes_rendidos = testService.numeroPruebas(s.getRut());
-        Float puntaje_promedio = testService.obtenerTodoPromedio(s.getRut());
+        GeneratePaymentsEntity g = generatePaymentService.obtenerPagoPorIdEstudiante(id);
+        StudentEntity s = g.getEstudiante();
+        Integer nro_pruebas = generatePaymentService.numeroPruebasPorRutEstudiante(s.getRut());
+        Float puntaje_promedio = generatePaymentService.puntajePromedioExamenes(s.getRut());
+        Integer cuotas_pagadas = generatePaymentService.cuotasPagadas(s.getId());
+        Float saldo_pagar = generatePaymentService.saldoPorPagar(s.getId());
 
-        Float falta_pagar; // falta hacer una función que vea al atributo pagado de pagos
+        // faltan la cantidad de cuotas por retraso
 
+        model.addAttribute("pagos", g);
+        model.addAttribute("nro_pruebas", nro_pruebas);
+        model.addAttribute("puntaje_promedio", puntaje_promedio);
+        model.addAttribute("cuotas_pagadas", cuotas_pagadas);
+        model.addAttribute("saldo_pagar", saldo_pagar);
 
         return "mostrarReporte";
     }
 
+    /*
     @PostMapping("/aplicarPuntaje")
     public String aplicandoPuntaje(){
         generatePaymentService.aplicarDescuentoPrueba();
         return "cargarCSV";
     }
+
+     */
 
 
 }

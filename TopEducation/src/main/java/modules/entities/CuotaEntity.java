@@ -19,21 +19,22 @@ public class CuotaEntity {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    private Integer numeroCuota;
-    private Float valorCuota;
-    private String estadoCuota;  // puede ser listo/pendiente
+    private Integer numero_cuota;
+
+    private Float valor_cuota;
+
+    private String estado_cuota;  // puede ser pendiente/pagado
 
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime fechaVencimiento;
+    private LocalDateTime fecha_vencimiento;
 
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime fecha_pago;
 
     // para asociarlo a un pago
     @ManyToOne
-    @JoinColumn(name = "pago_id", nullable = false)
-    private GeneratePaymentsEntity generatePaymentsEntity;
-
-
-
+    @JoinColumn(name = "id_pago", nullable = false)
+    private GeneratePaymentsEntity pago;
 
 
 }

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "pago")
 @AllArgsConstructor
@@ -17,16 +19,25 @@ public class GeneratePaymentsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
-    private String tipoPago;
-    private Integer numeroCuota;
-    private Float montoPago;  // esto cambia según es contado o en cuotas
+
+    private String tipo_pago;
+
+    private Integer numero_cuota;
+
+    private Float monto_total_aracel;  // esto cambia según es contado o en cuotas
+
     private Float matricula;
-    private Float pagado;
+
+    private Float monto_pagado;
+
+    private LocalDateTime ultimo_pago;
+
+    private Float saldo_devuelto;  // esto guarda lo que se le tiene que devolver al alumno por puntaje
 
     // para asociarlo con un estudiante
     @ManyToOne
-    @JoinColumn(name = "estudiante_id", nullable = false)
-    private StudentEntity student;
+    @JoinColumn(name = "id_estudiante", nullable = false)
+    private StudentEntity estudiante;
 
 
 

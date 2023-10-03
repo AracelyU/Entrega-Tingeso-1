@@ -27,11 +27,6 @@ public class TestService {
 
     private final Logger logg = LoggerFactory.getLogger(TestService.class);
 
-    public ArrayList<TestEntity> obtenerData(){
-        return (ArrayList<TestEntity>) testRepository.findAll();
-    }
-
-
     // la función guardar es para traer a la carpeta src los archivos seleccionados
     @Generated
     public String guardar(MultipartFile file){
@@ -58,6 +53,7 @@ public class TestService {
         }
     }
 
+    // leer el csv ingresado y guardarlo en BD
     @Generated
     public String leerCsv(String direccion){
         String texto = "";
@@ -96,29 +92,42 @@ public class TestService {
     }
 
 
+    // guardar en BD lo obtenido del csv
     public void guardarDataDB(String rut, String fechaExamen, String puntajeObtenido, String direccion){
         TestEntity newData = new TestEntity();
         newData.setRut(rut);
-        newData.setFechaExamen(fechaExamen);
-        newData.setPuntajeObtenido(Float.valueOf(puntajeObtenido));
-        newData.setNombrePrueba(direccion.replaceAll("\\.csv$", "")); // se quita la extensión del string
+        newData.setFecha_examen(fechaExamen);
+        newData.setPuntaje_obtenido(Float.valueOf(puntajeObtenido));
+        newData.setNombre_prueba(direccion.replaceAll("\\.csv$", "")); // se quita la extensión del string
         testRepository.save(newData);
     }
-    public void eliminarData(ArrayList<TestEntity> datas){
-        testRepository.deleteAll(datas);
+
+
+    // aplica promedio a los ultimos examenes de un estudiante
+    public Float obtenerPromedio(String rut){
+        return testRepository.findPuntajePromedio(rut);
     }
 
-    public Float obtenerTodoPromedio(String rut){
-        return testRepository.findAllPuntajePromedio(rut);
-    }
-
+    // obtiene el numero de examenes que rindio un estudiante
     public int numeroPruebas(String rut){
         return testRepository.findNumeroPruebas(rut);
     }
 
 
+//---------
 
+    // aplica promedio a todos los examenes que dio el estudiante
+    public Float obtenerTodoPromedio(String rut){
+        return testRepository.findAllPuntajePromedio(rut);
+    }
+    public ArrayList<TestEntity> obtenerData(){
+        return (ArrayList<TestEntity>) testRepository.findAll();
+    }
 
+    // eliminar BD
+    public void eliminarData(ArrayList<TestEntity> datas){
+        testRepository.deleteAll(datas);
+    }
 
 
 }

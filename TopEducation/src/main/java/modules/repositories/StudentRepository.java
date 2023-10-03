@@ -17,9 +17,10 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends CrudRepository<StudentEntity, Long> {
 
-
+    // encontrar estudiante por su rut
     StudentEntity findByRut(String rut);
 
+    // encontrar estudiante por su id
     @Query("select e from StudentEntity e where e.id = :id")
     StudentEntity findByid(@Param("id")Long id);
 

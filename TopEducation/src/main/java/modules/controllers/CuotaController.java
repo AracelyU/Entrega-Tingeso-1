@@ -2,7 +2,6 @@ package modules.controllers;
 
 import modules.entities.CuotaEntity;
 import modules.entities.GeneratePaymentsEntity;
-import modules.entities.StudentEntity;
 import modules.services.CuotaService;
 import modules.services.GeneratePaymentService;
 import modules.services.StudentService;
@@ -27,52 +26,49 @@ public class CuotaController {
     @Autowired
     StudentService studentService;
 
-    @GetMapping("/mostrarCuota")
-    public String elegirPago(Model model){
-        //ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        //model.addAttribute("students", estudiantes);
-        return "mostrarCuota";
+    @GetMapping("/mostrarPago")
+    public String monstrandoPago(){
+        return "mostrarPago";
     }
 
-    @PostMapping("/mostrarCuota")
+    @PostMapping("/mostrarPago")
     public String mostrandoCuota(@RequestParam("id_estudiante") Long id, Model model){
-        //ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id);
-        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPorGeneratePaymentArray(pagos);
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(id);
         model.addAttribute("cuotas", cuotas);
-        //model.addAttribute("students", estudiantes);
-        return "mostrarCuota";
+        return "mostrarPago";
     }
 
-    @PostMapping("/registrarCuota")
+    @PostMapping("/registrarPago")
     public String mostrarCuotasRegistrar(@RequestParam("id_estudiante") Long id, Model model){
-        //ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        //model.addAttribute("students", estudiantes);
-        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id);
-        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPendientesPorGeneratePaymentArray(pagos);
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(id);
         model.addAttribute("cuotas", cuotas);
-        return "registrarCuota";
+        return "registrarPago";
     }
+
 
     @PostMapping("/pagarCuota")
     public String registrarCuota(@RequestParam("cuota_id") Long id, Model model){
 
-        // hacer condicionales para ver si la cuota se paga en el tiempo correcto
         String mensaje = cuotaService.verificarPagarCuota(id);
-        if (mensaje.equals("Se ha pagado la cuota con exito.")) {
+        if (mensaje.equals("Se ha registrado el pago de la cuota con exito.")) {
             cuotaService.pagarCuota(id); // cambiar estado de cuota a pagado
-
         }
-
         model.addAttribute("mensaje", mensaje);
 
         // devolver información anterior
-        Long id_estudiante = cuotaService.obtenerCuotaPorId(id).getGeneratePaymentsEntity().getStudent().getId();
-        ArrayList<GeneratePaymentsEntity> pagos = generatePaymentService.encontrarPagoPorStudentId(id_estudiante);
-        ArrayList<CuotaEntity> cuotas = cuotaService.obtenerCuotasPendientesPorGeneratePaymentArray(pagos);
+        Long id_estudiante = cuotaService.obtenerCuotaPorId(id).getPago().getEstudiante().getId();
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(id_estudiante);
         model.addAttribute("cuotas", cuotas);
 
-        return "registrarCuota";
+        return "registrarPago";
     }
+
+    @PostMapping("/aplicarDescuentoPromedio")
+    public String aplicarDescuentoBD(Model model){
+        cuotaService.aplicarDescuentoPromedio();
+        model.addAttribute("mensaje", "Se ha aplicado el descuento por puntaje a toda la BD");
+        return "cargarCSV";
+    }
+
 
 }
