@@ -34,6 +34,7 @@ public interface CuotaRepository extends CrudRepository<CuotaEntity, Long> {
     Float findSaldoPorPagar(@Param("id_estudiante") Long id_estudiante);
 
 
+
     //--------
 
     // encontrar cuota por id_cuota

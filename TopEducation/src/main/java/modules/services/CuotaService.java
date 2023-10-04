@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -25,14 +26,9 @@ public class CuotaService {
     @Autowired
     TestService testService;
 
-    // obtener cuota por su id
-    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-
     // generar el numero de cuotas para un estudiante
     public void generarCuotas(GeneratePaymentsEntity g){  // fecha de pago es null
         LocalDateTime fechaActual = LocalDateTime.now();
-
         if(g.getTipo_pago().equals("cuotas")) {
             for (int i = 1; i < g.getNumero_cuota() + 1; i++) {
                 CuotaEntity c = new CuotaEntity();
@@ -98,9 +94,9 @@ public class CuotaService {
         LocalDateTime fechaActual = LocalDateTime.now();
         CuotaEntity c = cuotaRepository.findCuotaEntitiesById(id);
         c.setEstado_cuota("pagado");
-        GeneratePaymentsEntity g = c.getPago();
-        Float monto = g.getMonto_pagado() + c.getValor_cuota();  // se le suma lo que se pago de cuota a monto pagado
-        c.getPago().setMonto_pagado(monto);
+        //GeneratePaymentsEntity g = c.getPago();
+        //Float monto = g.getMonto_pagado() + c.getValor_cuota();  // se le suma lo que se pago de cuota a monto pagado
+        //c.getPago().setMonto_pagado(monto);
         c.setValor_cuota(0F); // ahora se paga la cuota
         c.setFecha_pago(fechaActual);
         c.getPago().setUltimo_pago(fechaActual);
@@ -155,19 +151,42 @@ public class CuotaService {
     // descuento por atraso en cuotas
     public Float descuentoAtrasoCuotas(CuotaEntity c){
         LocalDateTime fecha_actual = LocalDateTime.now();
-
         if(fecha_actual.isAfter(c.getFecha_vencimiento())){// la cuota esta vencida
+            // obtener la diferencia de tiempo entre las fechas
+            Period meses_diferencia = Period.between(c.getFecha_vencimiento().toLocalDate(), fecha_actual.toLocalDate());
+            Integer meses = meses_diferencia.getMonths();
+            if(meses == 0){
+                return 0F;
 
+            }else if(meses == 1){
+                return 0.03F;
 
+            } else if (meses == 2) {
+                return 0.06F;
 
+            } else if (meses == 3){
+                return 0.09F;
 
+            }else{
+                return 0.15F;
+            }
         }
-
         // sino esta vencida no hay porque aplicar descuento
         return 0F;
     }
 
+    public void aplicarInteresAtrasoCuotas(Long id_estudiante){
+        ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotasPendientesByGeneratePaymentId(id_estudiante);
+        for(CuotaEntity c : cuotas){
+            Float monto = c.getValor_cuota() * (1 + descuentoAtrasoCuotas(c));
+            c.setValor_cuota(monto);  // VER COMO AFECTA EL CAMBIO DE INTERES AL MONTO DE LO PAGADO DEL PAGO
+            cuotaRepository.save(c);
 
+        }
+
+
+
+    }
 
 
 

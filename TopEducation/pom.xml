@@ -15,6 +15,13 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<sonar.exclusions>
+			src/main/java/modules/controllers/*,
+			scr/main/java/modules/entities/*,
+			scr/main/java/modules/repositories/*
+		</sonar.exclusions>
+
+
 	</properties>
 	<dependencies>
 		<dependency>
