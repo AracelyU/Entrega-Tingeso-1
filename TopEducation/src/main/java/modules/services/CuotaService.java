@@ -97,7 +97,7 @@ public class CuotaService {
         //GeneratePaymentsEntity g = c.getPago();
         //Float monto = g.getMonto_pagado() + c.getValor_cuota();  // se le suma lo que se pago de cuota a monto pagado
         //c.getPago().setMonto_pagado(monto);
-        c.setValor_cuota(0F); // ahora se paga la cuota
+        //c.setValor_cuota(0F); // ahora se paga la cuota
         c.setFecha_pago(fechaActual);
         c.getPago().setUltimo_pago(fechaActual);
         cuotaRepository.save(c);
@@ -140,7 +140,20 @@ public class CuotaService {
 
     // saldo que aún queda por pagar
     public Float saldoPorPagar(Long id_estudiante){
-        return cuotaRepository.findSaldoPorPagar(id_estudiante);
+        if(cuotaRepository.findSaldoPorPagar(id_estudiante) != null){
+            return cuotaRepository.findSaldoPorPagar(id_estudiante);
+        }else{
+            return 0F;
+        }
+    }
+
+    // saldo pagado
+    public Float saldoPagado(Long id_estudiante){
+        if(cuotaRepository.findSaldoPagado(id_estudiante) != null){
+            return cuotaRepository.findSaldoPagado(id_estudiante);
+        }else{
+            return 0F;
+        }
     }
 
     // obtener cuota por su id
@@ -183,9 +196,18 @@ public class CuotaService {
             cuotaRepository.save(c);
 
         }
+    }
 
-
-
+    public Integer numeroCuotasAtrasadas(Long id_estudiante){
+        ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotaEntitiesByIdStudent(id_estudiante);
+        Integer atrasos = 0;
+        for(CuotaEntity c : cuotas){
+            LocalDateTime fecha_actual = LocalDateTime.now();
+            if(fecha_actual.isAfter(c.getFecha_vencimiento())){// la cuota esta vencida
+                atrasos++;
+            }
+        }
+        return atrasos;
     }
 
 

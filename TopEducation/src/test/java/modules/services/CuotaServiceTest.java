@@ -92,14 +92,12 @@ class CuotaServiceTest {
         nuevoEstudiante.setNombre_escuela("Escuela 1");
         nuevoEstudiante.setAnio_egreso("2023");
         studentRepository.save(nuevoEstudiante);
-
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
         g.setEstudiante(nuevoEstudiante);
         g.setNumero_cuota(1);
         g.setTipo_pago("contado");
         generatePaymentRepository.save(g);
-
         // generando cuota
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1F);
@@ -107,15 +105,11 @@ class CuotaServiceTest {
         c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
-
         ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(g.getEstudiante().getId());
         assertNotEquals(0, cuotas.size()); // Asegura que la lista tenga elementos
-
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
         studentRepository.delete(nuevoEstudiante);
-
-
     }
 
     /* dudando en hacer este test
@@ -202,7 +196,6 @@ class CuotaServiceTest {
         cuotaRepository.save(c);
 
         assertNotEquals(0, cuotaService.cuotasPagadasPorIdEstudiante(g.getEstudiante().getId())); // Asegura que la lista tenga elementos
-
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
         studentRepository.delete(nuevoEstudiante);
@@ -214,19 +207,13 @@ class CuotaServiceTest {
         // creando estudiante
         StudentEntity nuevoEstudiante = new StudentEntity();
         nuevoEstudiante.setRut("987654321");
-        nuevoEstudiante.setNombre_estudiante("Alex");
-        nuevoEstudiante.setApellido_estudiante("Van");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
         nuevoEstudiante.setNombre_escuela("Escuela 1");
         nuevoEstudiante.setAnio_egreso("2023");
         studentRepository.save(nuevoEstudiante);
-
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
         g.setEstudiante(nuevoEstudiante);
         generatePaymentRepository.save(g);
-
         // generando cuota
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1F);
@@ -234,14 +221,10 @@ class CuotaServiceTest {
         c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
-
         assertEquals(1F, cuotaService.saldoPorPagar(g.getEstudiante().getId()));
-
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
         studentRepository.delete(nuevoEstudiante);
-
-
     }
 
     /* dudando en hacer este test
@@ -257,6 +240,32 @@ class CuotaServiceTest {
 
     }
      */
+
+    @Test
+    void testNumeroCuotasAtrasadas(){
+        // creando estudiante
+        StudentEntity nuevoEstudiante = new StudentEntity();
+        nuevoEstudiante.setRut("000000AAAAA");
+        studentRepository.save(nuevoEstudiante);
+        // generando pago
+        GeneratePaymentsEntity g = new GeneratePaymentsEntity();
+        g.setEstudiante(nuevoEstudiante);
+        generatePaymentRepository.save(g);
+        // generando cuota
+        CuotaEntity c = new CuotaEntity();
+        c.setValor_cuota(1F);
+        c.setEstado_cuota("pendiente");
+        LocalDateTime fecha = LocalDateTime.of(2023, 10, 3, 0, 0);
+        c.setFecha_vencimiento(fecha);
+        c.setNumero_cuota(1);
+        c.setPago(g);
+        cuotaRepository.save(c);
+        assertEquals(1, cuotaService.numeroCuotasAtrasadas(nuevoEstudiante.getId()));
+        cuotaRepository.delete(c);
+        generatePaymentRepository.delete(g);
+        studentRepository.delete(nuevoEstudiante);
+
+    }
 
 
 

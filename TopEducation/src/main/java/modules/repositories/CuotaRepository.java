@@ -28,12 +28,13 @@ public interface CuotaRepository extends CrudRepository<CuotaEntity, Long> {
     @Query("SELECT COUNT(*) FROM CuotaEntity c WHERE c.estado_cuota = 'pagado' AND c.pago.estudiante.id = :id_estudiante")
     Integer findCuotasPagadas(@Param("id_estudiante") Long id_estudiante);
 
+    // monto pagado
+    @Query("SELECT SUM(c.valor_cuota) FROM CuotaEntity c WHERE c.estado_cuota = 'pagado' AND c.pago.estudiante.id = :id_estudiante")
+    Float findSaldoPagado(@Param("id_estudiante") Long id_estudiante);
 
     // monto total que aún queda por pagar
     @Query("SELECT SUM(c.valor_cuota) FROM CuotaEntity c WHERE c.estado_cuota = 'pendiente' AND c.pago.estudiante.id = :id_estudiante")
     Float findSaldoPorPagar(@Param("id_estudiante") Long id_estudiante);
-
-
 
     //--------
 

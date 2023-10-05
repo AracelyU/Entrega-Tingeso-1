@@ -28,15 +28,7 @@ public class GeneratePaymentService {
     @Autowired
     TestService testService;
 
-    // obtener estudiantes
-    public ArrayList<StudentEntity> obtenerEstudiantes(){
-        return studentService.obtenerEstudiantes();
-    }
 
-    // obtener todos los pagos
-    public ArrayList<GeneratePaymentsEntity> obtenerPagos(){
-        return (ArrayList<GeneratePaymentsEntity>) generatePaymentRepository.findAll();
-    }
 
     // verifica si se cumplen las condiciones para generar un pago
     public String verificarGuardarPago(Long id_estudiante, Integer numeroCuotas, String tipoPago){
@@ -133,40 +125,6 @@ public class GeneratePaymentService {
     public GeneratePaymentsEntity obtenerPagoPorIdEstudiante(Long id_estudiante){
         return generatePaymentRepository.findByStudentId(id_estudiante);
     }
-
-    // obtener numero de pruebas que rindio un estudiante
-    public Integer numeroPruebasPorRutEstudiante(String rut){
-        return testService.numeroPruebas(rut);
-    }
-
-    // obtener promedio puntaje ultimos examenes
-    public Float puntajePromedioExamenes(String rut){
-        return testService.obtenerPromedio(rut);
-    }
-
-    // obtener cuotas pagadas
-    public Integer cuotasPagadas(Long id_estudiante){
-        return cuotaService.cuotasPagadasPorIdEstudiante(id_estudiante);
-    }
-
-    // saldo por pagar
-    public Float saldoPorPagar(Long id_estudiante){
-        return cuotaService.saldoPorPagar(id_estudiante);
-    }
-
-
-
-
-    //_-----------
-
-
-
-
-
-
-
-
-
 
 
 

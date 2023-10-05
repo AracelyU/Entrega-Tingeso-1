@@ -16,13 +16,14 @@
         <p>Nombre Estudiante: <span th:text="${pago.getEstudiante().getNombre_estudiante() + ' ' + pago.getEstudiante().getApellido_estudiante()}"></span></p>
         <p>Nro Examenes Rendidos: <span th:text="${nro_pruebas}"></span></p>
         <p>Promedio Puntaje Exámenes: <span th:text="${puntaje_promedio}"></span></p>
-        <p>Monto Total Del Arancel A Pagar: <span th:text="${pago.getMonto_total_aracel()}"></span></p>
+        <p>Monto Total Del Arancel A Pagar: <span th:text="${total_arancel}"></span></p>
         <p>Tipo Pago: <span th:text="${pago.getTipo_pago()}"></span></p>
         <p>Nro Total De Cuotas Pactadas: <span th:text="${pago.getNumero_cuota()}"></span></p>
         <p>Nro Cuotas Pagadas: <span th:text="${cuotas_pagadas}"></span></p>
-        <p>Monto Total Pagado: <span th:text="${pago.getUltimo_pago()}"></span></p>
+        <p>Monto Total Pagado: <span th:text="${saldo_pagado}"></span></p>
+        <p>Último Pago: <span th:text="${pago.getUltimo_pago()}"></span></p>
         <p>Saldo Por Pagar: <span th:text="${saldo_pagar}"></span></p>
-        <!-- faltan cuotas con retraso -->
+        <p>Cuotas Atrasadas: <span th:text="${cuotas_atraso}"></span></p>
     </li>
 </ul>
 

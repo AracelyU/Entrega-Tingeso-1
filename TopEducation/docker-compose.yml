@@ -6,19 +6,19 @@ services:
     volumes:
       - ./data/db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: tingesodb
+      MYSQL_ROOT_PASSWORD: 2190
+      MYSQL_DATABASE: topedu
     ports:
       - 33060:3306
   app:
-    container_name: mueblesstgopep1
-    image: johnserrano159/mueblesstgopep1
+    container_name: tingeso1
+    image: aracelyu/tingeso1
     ports:
       - "8090:8090"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/tingesodb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/topedu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_PASSWORD=2190
     deploy:
       restart_policy:
         condition: on-failure

@@ -33,6 +33,7 @@ public class CuotaController {
 
     @PostMapping("/mostrarPago")
     public String mostrandoCuota(@RequestParam("id_estudiante") Long id, Model model){
+        cuotaService.aplicarInteresAtrasoCuotas(id);  // se analiza si hay cuotas atrasadas
         ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(id);
         model.addAttribute("cuotas", cuotas);
         return "mostrarPago";
@@ -40,6 +41,7 @@ public class CuotaController {
 
     @PostMapping("/registrarPago")
     public String mostrarCuotasRegistrar(@RequestParam("id_estudiante") Long id, Model model){
+        cuotaService.aplicarInteresAtrasoCuotas(id);  // se analiza si hay cuotas atrasadas
         ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(id);
         model.addAttribute("cuotas", cuotas);
         return "registrarPago";

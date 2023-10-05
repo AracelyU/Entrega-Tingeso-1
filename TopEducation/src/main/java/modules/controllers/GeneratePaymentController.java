@@ -1,5 +1,6 @@
 package modules.controllers;
 
+import modules.entities.CuotaEntity;
 import modules.entities.GeneratePaymentsEntity;
 import modules.entities.StudentEntity;
 import modules.services.CuotaService;
@@ -25,13 +26,16 @@ public class GeneratePaymentController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private CuotaService cuotaService;
+
 
     @Autowired
     private TestService testService;
 
     @GetMapping("/generarPago")
     public String generarCuota(Model model) {
-        ArrayList<StudentEntity> estudiantes = generatePaymentService.obtenerEstudiantes();
+        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
         return "generarPago";
     }
@@ -46,7 +50,7 @@ public class GeneratePaymentController {
             generatePaymentService.guardarPago(id, numeroCuotas, opcionPago);
         }
         model.addAttribute("mensaje", mensaje);
-        ArrayList<StudentEntity> estudiantes = generatePaymentService.obtenerEstudiantes();
+        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
         return "generarPago";
     }
@@ -54,7 +58,7 @@ public class GeneratePaymentController {
 
     @GetMapping("/generarReporte")
     public String generandoReporte(Model model){
-        ArrayList<StudentEntity> estudiantes = generatePaymentService.obtenerEstudiantes();
+        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
         return "generarReporte";
 
@@ -64,10 +68,13 @@ public class GeneratePaymentController {
     public String mostrandoReporte(@RequestParam("id_estudiante") Long id, Model model){
         GeneratePaymentsEntity g = generatePaymentService.obtenerPagoPorIdEstudiante(id);
         StudentEntity s = g.getEstudiante();
-        Integer nro_pruebas = generatePaymentService.numeroPruebasPorRutEstudiante(s.getRut());
-        Float puntaje_promedio = generatePaymentService.puntajePromedioExamenes(s.getRut());
-        Integer cuotas_pagadas = generatePaymentService.cuotasPagadas(s.getId());
-        Float saldo_pagar = generatePaymentService.saldoPorPagar(s.getId());
+        Integer nro_pruebas = testService.numeroPruebas(s.getRut());
+        Float puntaje_promedio = testService.obtenerPromedio(s.getRut());
+        Integer cuotas_pagadas = cuotaService.cuotasPagadasPorIdEstudiante(s.getId());
+        Float saldo_pagar = cuotaService.saldoPorPagar(s.getId());
+        Float saldo_pagado = cuotaService.saldoPagado(s.getId());
+        Float total_arancel = saldo_pagado + saldo_pagar;
+        Integer cuotas_atraso = cuotaService.numeroCuotasAtrasadas(s.getId());
 
         // faltan la cantidad de cuotas por retraso
 
@@ -76,6 +83,9 @@ public class GeneratePaymentController {
         model.addAttribute("puntaje_promedio", puntaje_promedio);
         model.addAttribute("cuotas_pagadas", cuotas_pagadas);
         model.addAttribute("saldo_pagar", saldo_pagar);
+        model.addAttribute("saldo_pagado", saldo_pagado);
+        model.addAttribute("total_arancel", total_arancel);
+        model.addAttribute("cuotas_atraso", cuotas_atraso);
 
         return "mostrarReporte";
     }
