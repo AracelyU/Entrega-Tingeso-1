@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Mostrar Pago</title>
+
+    <style>
+
+        h1 { /* Se centra titulo h1 */
+            text-align: center;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse; /* Colapsar los bordes de la tabla */
+            border: 1px solid #ddd; /* Agregar un borde a la tabla */
+        }
+
+        .table th, .table td {
+            padding: 8px; /* Añadir espacio de relleno a las celdas */
+            border: 1px solid #ddd; /* Agregar un borde a las celdas */
+            text-align: center; /* Centrar el contenido de las celdas */
+        }
+
+        .table thead {
+            background-color: #f2f2f2; /* Color de fondo para la fila de encabezados */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Color de fondo para filas pares */
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+
+    <h1><b>Cuotas</b></h1>
+
+    <!-- Tabla para mostrar las cuotas del estudiante -->
+    <table class="table">
+        <thead class="thead-dark">
+        <hr>
+        <tr>
+            <th>N° de Cuota</th>
+            <th>Valor de Cuota</th>
+            <th>Estado de Cuota</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Fecha Pago </th>
+            <th>Tipo de Pago</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Aquí puedes iterar sobre las cuotas del estudiante y mostrarlas en la tabla -->
+        <tr th:each="cuota : ${cuotas}">
+            <td th:text="${cuota.getNumero_cuota()}"></td>
+            <td th:text="${cuota.getValor_cuota()}"></td>
+            <td th:text="${cuota.getEstado_cuota()}"></td>
+            <td th:text="${cuota.getFecha_vencimiento()}"></td>
+            <td th:text="${cuota.getFecha_pago()}"></td>
+            <td th:text="${cuota.getPago().getTipo_pago()}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

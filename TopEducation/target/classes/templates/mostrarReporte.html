@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Mostrar Reporte</title>
+</head>
+<body>
+
+<h1>Reporte Estudiante</h1>
+<hr>
+
+<ul>
+    <!-- Iterar a través de los pagos y mostrar cada uno en un elemento de lista -->
+    <li th:each="pago : ${pagos}">
+        <p>RUT: <span th:text="${pago.getEstudiante().getRut()}"></span></p>
+        <p>Nombre Estudiante: <span th:text="${pago.getEstudiante().getNombre_estudiante() + ' ' + pago.getEstudiante().getApellido_estudiante()}"></span></p>
+        <p>Nro Examenes Rendidos: <span th:text="${nro_pruebas}"></span></p>
+        <p>Promedio Puntaje Exámenes: <span th:text="${puntaje_promedio}"></span></p>
+        <p>Monto Total Del Arancel A Pagar: <span th:text="${total_arancel}"></span></p>
+        <p>Tipo Pago: <span th:text="${pago.getTipo_pago()}"></span></p>
+        <p>Nro Total De Cuotas Pactadas: <span th:text="${pago.getNumero_cuota()}"></span></p>
+        <p>Nro Cuotas Pagadas: <span th:text="${cuotas_pagadas}"></span></p>
+        <p>Monto Total Pagado: <span th:text="${saldo_pagado}"></span></p>
+        <p>Último Pago: <span th:text="${pago.getUltimo_pago()}"></span></p>
+        <p>Saldo Por Pagar: <span th:text="${saldo_pagar}"></span></p>
+        <p>Cuotas Atrasadas: <span th:text="${cuotas_atraso}"></span></p>
+    </li>
+</ul>
+
+</body>
+</html>

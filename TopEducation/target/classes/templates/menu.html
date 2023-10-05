@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <head>
+        <title>TopEducationWeb</title>
+        <style>
+
+            /* Estilo para el contenido */
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+                background-color: transparent; /* Fondo transparente para el contenido principal */
+                position: relative; /* Establece posición relativa para el contenido */
+                z-index: 1; /* Coloca el contenido sobre el contenedor */
+            }
+
+            .title {
+                font-size: 72px; /* Aumentar el tamaño del título */
+                margin-bottom: 20px;
+            }
+
+            .btn-container {
+                text-align: center;
+            }
+
+            .btn-container a {
+                display: block; /* Hacer que los botones sean elementos de bloque */
+                margin-bottom: 10px;  /* Agregar espacio entre los botones */
+            }
+
+        </style>
+    </head>
+<body>
+<div class="title">TopEducationWeb</div>
+<div class="btn-container">
+    <a class="btn btn-primary btn-lg mb-2" href="http://localhost:8090/listaEstudiante" role="button">Mostrar Lista de Estudiantes</a>
+    <a class="btn btn-success btn-lg mb-2" href="http://localhost:8090/generarReporte" role="button">Generar Reportes</a>
+    <a class="btn btn-info btn-lg mb-2" href="http://localhost:8090/cargarCSV" role="button">Cargar CSV</a>
+</div>
+
+</body>
+</html>

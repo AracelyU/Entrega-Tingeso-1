@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Generar Pago</title>
+</head>
+<body>
+    <div class="container">
+        <h1><b>Generando Pagos</b></h1>
+
+        <!-- Mostrar mensaje de éxito si existe -->
+        <div th:if="${mensaje}" class="alert alert-success">
+            <p th:text="${mensaje}"></p>
+        </div>
+        <!-- Mostrar mensaje de error si existe -->
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form  th:action="@{/generarPago}" method="POST">
+            <hr/>
+            <h5>Seleccione un Alumno:</h5>
+            <label>
+                <select name="alumno" required>
+                    <option value="">Selecciona un Alumno</option>
+                    <option th:each="student : ${students}" th:value="${student.id}">
+                        <span th:text="${student.getNombre_estudiante() + ' ' + student.getApellido_estudiante()}"></span>
+                    </option>
+                </select>
+            </label>
+            <h5>Seleccione una Opción de Pago:</h5>
+            <label for="contado">Pago al Contado:</label>
+            <input type="radio" id="contado" name="opcionPago" value="contado" required>
+            <br>
+            <label for="cuotas">Pago en Cuotas:</label>
+            <input type="radio" id="cuotas" name="opcionPago" value="cuotas" required>
+            <br><br>
+            <label for="numeroCuotas">Número de Cuotas:</label>
+            <input type="number" id="numeroCuotas" name="numeroCuotas"  value="1" required>
+            <br><br>
+            <input type="submit" value="Crear Pago">
+            <hr/>
+        </form>
+    </div>
+</body>
+</html>

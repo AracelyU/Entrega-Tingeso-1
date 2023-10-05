@@ -1,0 +1,5 @@
+modules\services\CuotaServiceTest.class
+modules\services\GeneratePaymentServiceTest.class
+modules\services\TestServiceTest.class
+modules\services\StudentServiceTest.class
+modules\services\EjercutarTest.class

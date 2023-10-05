@@ -1,0 +1,71 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro Estudiante</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-sm">
+    <h1>Formulario de Estudiantes</h1>
+
+    <!-- Mostrar mensaje de éxito si existe -->
+    <div th:if="${mensaje}" class="alert alert-success">
+        <p th:text="${mensaje}"></p>
+    </div>
+    <!-- Mostrar mensaje de error si existe -->
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <form  th:action="@{/nuevoEstudiante}" method="POST">
+
+        <h1><b>Registrar nuevo Estudiante</b></h1>
+        <div class="formcontainer">
+            <hr/>
+            <div class="container">
+
+                <label><strong>Rut</strong></label>
+                <label for="rut"></label><input type="text" id = "rut"
+                                                placeholder="Ingrese el rut" name="rut" required>
+                <br>
+                <label><strong>Nombre</strong></label>
+                <label for="nombreEstudiante"></label><input type="text" id = "nombreEstudiante"
+                                                             placeholder="Ingrese el nombre" name="nombreEstudiante" required>
+                <br>
+                <label><strong>Apellido</strong></label>
+                <label for="nombreApellido"></label><input type="text" id = "nombreApellido"
+                                                           placeholder="Ingrese el apellido" name="apellidoEstudiante" required>
+                <br>
+                <label><strong>Fecha Nacimiento (YYYY/MM/DD)</strong></label>
+                <label for="fechaNacimiento"></label><input type="date" id = "fechaNacimiento"
+                                                           placeholder="Ingrese fecha de nacimiento" name="fechaNacimiento" required>
+                <br>
+                <label><strong>Tipo Escuela</strong></label>
+                <br>
+                <label for="municipal">Municipal:</label>
+                <input type="radio" id="municipal" name="tipoEscuela" value="municipal" required>
+                <br>
+                <label for="subvencionado">Subvencionado:</label>
+                <input type="radio" id="subvencionado" name="tipoEscuela" value="subvencionado" required>
+                <br>
+                <label for="privado">Privado:</label>
+                <input type="radio" id="privado" name="tipoEscuela" value="privado" required>
+
+                <br>
+                <label><strong>Nombre Escuela</strong></label>
+                <label for="nombreEscuela"></label><input type="text" id = "nombreEscuela"
+                                                          placeholder="Ingrese el nombre de la escuela" name="nombreEscuela" required>
+                <br>
+                <label><strong>Año Egreso</strong></label>
+                <label for="anioEgreso"></label><input type="text" id = "anioEgreso"
+                                                          placeholder="Ingrese el año de egreso" name="anioEgreso" required>
+            </div>
+            <button type="submit">Registrar Estudiante</button>
+            <div th:if="${mensajeRegistro != null}" th:text="${mensajeRegistro}"></div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
