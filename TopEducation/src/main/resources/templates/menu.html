@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <head>
+        <title>Página de Acciones</title>
+        <style>
+            body {
+                background-color: #b6f7fb; /* Cambiar el color de fondo de la página */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .title {
+                font-size: 72px; /* Aumentar el tamaño del título */
+                margin-bottom: 20px;
+            }
+
+            .btn-container {
+                text-align: center;
+            }
+
+            .btn-container a {
+                display: block; /* Hacer que los botones sean elementos de bloque */
+                margin-bottom: 10px; /* Agregar espacio entre los botones */
+            }
+        </style>
+    </head>
+<body>
+<div class="title">TopEducationWeb</div>
+<div class="btn-container">
+    <a class="btn-primary" href="http://localhost:8090/listaEstudiante" role="button">Mostrar Lista de Estudiantes</a>
+    <a class="btn-info" href="http://localhost:8090/generarReporte" role="button">Generar Reportes</a>
+    <a class="btn-secondary" href="http://localhost:8090/cargarCSV" role="button">Cargar CSV</a>
+</div>
+
+</body>
+</html>
