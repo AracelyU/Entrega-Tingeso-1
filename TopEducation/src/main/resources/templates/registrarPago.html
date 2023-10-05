@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Registrar</title>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <title>Registrar Pago</title>
+
+  <style>
+
+    h1 { /* Se centra titulo h1 */
+      text-align: center;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse; /* Colapsar los bordes de la tabla */
+      border: 1px solid #ddd; /* Agregar un borde a la tabla */
+    }
+
+    .table th, .table td {
+      padding: 8px; /* Añadir espacio de relleno a las celdas */
+      border: 1px solid #ddd; /* Agregar un borde a las celdas */
+      text-align: center; /* Centrar el contenido de las celdas */
+    }
+
+    .table thead {
+      background-color: #f2f2f2; /* Color de fondo para la fila de encabezados */
+    }
+
+    .table tbody tr:nth-child(even) {
+      background-color: #f2f2f2; /* Color de fondo para filas pares */
+    }
+  </style>
+
 </head>
 <body>
-<h1><b>Cuotas pendientes por pagar</b></h1>
+<h1>Registrar Pagos</h1>
 
 <!-- Mostrar mensaje de éxito si existe -->
-<div th:if="${mensaje}" class="alert alert-success">
+<div th:if="${mensaje}" class="alert alert-success" style="font-size: 1em; text-align: center;">
   <p th:text="${mensaje}"></p>
-</div>
-<!-- Mostrar mensaje de error si existe -->
-<div th:if="${error}" class="alert alert-danger">
-  <p th:text="${error}"></p>
 </div>
 
 
 <table class="table">
   <thead class="thead-dark">
-  <hr>
   <tr>
     <th>N° de Cuota</th>
     <th>Valor de Cuota</th>
     <th>Estado de Cuota</th>
     <th>Fecha de Vencimiento</th>
     <th>Tipo de Pago</th>
+    <th>Acciones</th>
   </tr>
   </thead>
   <tbody>
@@ -37,17 +62,13 @@
     <td th:text="${cuota.getFecha_vencimiento()}"></td>
     <td th:text="${cuota.getPago().getTipo_pago()}"></td>
     <td>
-
-
-
       <form  th:action="@{/pagarCuota}" method="POST">
           <input type="hidden" name="cuota_id" th:value="${cuota.id}">
           <!--<input type="checkbox" name="cuota1" id="cuota1">-->
           <button type="submit" class="btn btn-primary">Pagado</button>
       </form>
-
     </td>
-    </hr>
+
   </tr>
   </tbody>
 </table>

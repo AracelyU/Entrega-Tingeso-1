@@ -2,22 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <title>Generar Reporte</title>
+
+    <style>
+        /* Estilo para la franja superior */
+        .franja-superior {
+            background-color: #9aceff;
+            height: 5cm; /* Altura de la franja superior */
+        }
+
+        /* Estilo para la franja inferior */
+        .franja-inferior {
+            background-color: #9aceff;
+            height: 5cm; /* Altura de la franja inferior */
+        }
+
+        /* Estilos para centrar y aumentar el tamaño */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            font-size: 2em; /* Aumentar el tamaño del formulario */
+            text-align: center; /* Centrar el texto dentro del formulario */
+        }
+
+        h1 {
+            text-align: center; /* Centrar el texto de h1 */
+        }
+    </style>
 </head>
 <body>
+<div class="franja-superior"></div>
 
-<form th:action="@{/generarReporte}" method="POST">
-    <h5>Seleccione un Estudiante:</h5>
-    <label>
-        <select name="id_estudiante" required>
-            <option value="">Selecciona un Estudiante</option>
-            <option th:each="student : ${students}" th:value="${student.id}">
-                <span th:text="${student.getNombre_estudiante() + ' ' + student.getApellido_estudiante() + ' '}"></span>
-            </option>
-        </select>
-    </label>
-    <input type="submit" value="Generar Reporte">
-</form>
+<h1>Seleccione un estudiante para generar su reporte</h1>
+<br><br>
+<div class="container-center">
+    <form th:action="@{/generarReporte}" method="POST">
+        <label>
+            <select name="id_estudiante" required>
+                <option value="">Selecciona un Estudiante</option>
+                <option th:each="student : ${students}" th:value="${student.id}">
+                    <span th:text="${student.getNombre_estudiante() + ' ' + student.getApellido_estudiante() + ' '}"></span>
+                </option>
+            </select>
+        </label>
+        <input type="submit" class= "btn btn-primary" value="Generar Reporte">
+    </form>
+</div>
+
+<div class="franja-inferior"></div>
 
 <br>
 

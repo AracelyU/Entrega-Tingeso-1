@@ -7,9 +7,39 @@
 </head>
 <body>
 <div class="container-sm">
-
     <h1>Listado de Estudiantes</h1>
-    <a class="btn btn-secondary" href="http://localhost:8090/nuevoEstudiante" role="button">Añadir Estudiante</a>
+
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-secondary" href="http://localhost:8090/TopEducationWeb" role="button">Volver al Menú Principal</a>
+        <a class="btn btn-secondary" href="http://localhost:8090/nuevoEstudiante" role="button">Añadir Estudiante</a>
+    </div>
+
+    <style>
+
+        h1 { /* Se centra titulo h1 */
+            text-align: center;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse; /* Colapsar los bordes de la tabla */
+            border: 1px solid #ddd; /* Agregar un borde a la tabla */
+        }
+
+        .table th, .table td {
+            padding: 8px; /* Añadir espacio de relleno a las celdas */
+            border: 1px solid #ddd; /* Agregar un borde a las celdas */
+            text-align: center; /* Centrar el contenido de las celdas */
+        }
+
+        .table thead {
+            background-color: #f2f2f2; /* Color de fondo para la fila de encabezados */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Color de fondo para filas pares */
+        }
+    </style>
 
     <hr>
     <table class="table">
@@ -40,16 +70,13 @@
 
                 <form  th:action="@{/mostrarPago}" method="POST">
                     <input type="hidden" name="id_estudiante" th:value="${student.id}">
-                    <button type="submit" class="btn btn-primary">Mostrar Cuotas</button>
+                    <button type="submit" class="btn btn-primary mb-2">Mostrar Cuotas</button>
                 </form>
 
                 <form  th:action="@{/registrarPago}" method="POST">
                     <input type="hidden" name="id_estudiante" th:value="${student.id}">
-                    <button type="submit" class="btn btn-primary">Pagar Cuotas</button>
+                    <button type="submit" class="btn btn-primary mb-2">Pagar Cuotas</button>
                 </form>
-
-                <a class="btn btn-info" href="#" role="button">Editar</a>
-                <a class="btn btn-secondary" href="#" role="button">Eliminar</a>
 
             </td>
         </tr>
