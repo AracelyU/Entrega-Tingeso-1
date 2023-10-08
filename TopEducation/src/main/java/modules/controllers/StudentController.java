@@ -1,16 +1,14 @@
 package modules.controllers;
 
 import modules.entities.StudentEntity;
-import modules.services.GeneratePaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import modules.services.StudentService;
+import modules.StudentService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Controller
 @RequestMapping

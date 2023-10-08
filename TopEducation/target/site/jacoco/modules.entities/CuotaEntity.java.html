@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CuotaEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">modules.entities</a> &gt; <span class="el_source">CuotaEntity.java</span></div><h1>CuotaEntity.java</h1><pre class="source lang-java linenums">package modules.entities;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+<span class="nc" id="L11">@AllArgsConstructor</span>
+<span class="fc" id="L12">@NoArgsConstructor</span>
+@Table(name = &quot;cuotas&quot;)
+<span class="pc bnc" id="L14" title="All 62 branches missed.">@Data</span>
+public class CuotaEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
+<span class="fc" id="L20">    private Long id;</span>
+
+<span class="nc" id="L22">    private Integer numero_cuota;</span>
+
+<span class="fc" id="L24">    private Float valor_cuota;</span>
+
+<span class="fc" id="L26">    private String estado_cuota;  // puede ser pendiente/pagado</span>
+
+    @Column(columnDefinition = &quot;TIMESTAMP&quot;)
+<span class="fc" id="L29">    private LocalDateTime fecha_vencimiento;</span>
+
+    @Column(columnDefinition = &quot;TIMESTAMP&quot;)
+<span class="nc" id="L32">    private LocalDateTime fecha_pago;</span>
+
+    // para asociarlo a un pago
+    @ManyToOne
+    @JoinColumn(name = &quot;id_pago&quot;, nullable = false)
+<span class="fc" id="L37">    private GeneratePaymentsEntity pago;</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

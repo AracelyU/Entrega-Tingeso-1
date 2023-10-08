@@ -1,12 +1,11 @@
 package modules.controllers;
 
-import modules.entities.CuotaEntity;
 import modules.entities.GeneratePaymentsEntity;
 import modules.entities.StudentEntity;
-import modules.services.CuotaService;
-import modules.services.GeneratePaymentService;
-import modules.services.StudentService;
-import modules.services.TestService;
+import modules.CuotaService;
+import modules.GeneratePaymentService;
+import modules.StudentService;
+import modules.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Controller

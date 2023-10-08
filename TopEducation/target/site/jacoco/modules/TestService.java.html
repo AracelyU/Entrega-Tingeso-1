@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">modules</a> &gt; <span class="el_source">TestService.java</span></div><h1>TestService.java</h1><pre class="source lang-java linenums">package modules;
+
+import lombok.Generated;
+import modules.entities.TestEntity;
+import modules.repositories.TestRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+@Service
+<span class="fc" id="L21">public class TestService {</span>
+
+    @Autowired
+    TestRepository testRepository;
+
+<span class="fc" id="L26">    private final Logger logg = LoggerFactory.getLogger(TestService.class);</span>
+
+    // la función guardar es para traer a la carpeta src los archivos seleccionados
+    @Generated
+    public String guardar(MultipartFile file){
+        String filename = file.getOriginalFilename();
+        if(!filename.toLowerCase().contains(&quot;.csv&quot;)){
+            return &quot;No ingreso un archivo csv&quot;;
+        }
+        if(filename != null){
+            if(!file.isEmpty()){
+                try{
+                    byte [] bytes = file.getBytes();
+                    Path path  = Paths.get(file.getOriginalFilename());
+                    Files.write(path, bytes);
+                    logg.info(&quot;Archivo guardado&quot;);
+                }
+                catch (IOException e){
+                    logg.error(&quot;ERROR&quot;, e);
+                }
+            }
+            return &quot;Archivo guardado con exito!&quot;;
+        }
+        else{
+            return &quot;No se pudo guardar el archivo&quot;;
+        }
+    }
+
+    // leer el csv ingresado y guardarlo en BD
+    @Generated
+    public String leerCsv(String direccion){
+        String texto = &quot;&quot;;
+        BufferedReader bf = null;
+        //testRepository.deleteAll();
+        if(!direccion.toLowerCase().contains(&quot;.csv&quot;)){
+            return &quot;No ingreso un archivo csv&quot;;
+        }
+        try{
+            bf = new BufferedReader(new FileReader(direccion));
+            String temp = &quot;&quot;;
+            String bfRead;
+            int count = 1;
+            while((bfRead = bf.readLine()) != null){
+                if (count == 1){
+                    count = 0;
+                }
+                else{
+                    guardarDataDB(bfRead.split(&quot;;&quot;)[0], bfRead.split(&quot;;&quot;)[1], bfRead.split(&quot;;&quot;)[2], direccion);
+                    temp = temp + &quot;\n&quot; + bfRead;
+                }
+            }
+            texto = temp;
+            return &quot;Archivo leido exitosamente&quot;;
+        }catch(Exception e){
+            return &quot;No se encontro el archivo&quot;;
+        }finally{
+            if(bf != null){
+                try{
+                    bf.close();
+                }catch(IOException e){
+                    logg.error(&quot;ERROR&quot;, e);
+                }
+            }
+        }
+    }
+
+
+    // guardar en BD lo obtenido del csv
+    public void guardarDataDB(String rut, String fechaExamen, String puntajeObtenido, String direccion){
+<span class="nc" id="L95">        TestEntity newData = new TestEntity();</span>
+<span class="nc" id="L96">        newData.setRut(rut);</span>
+<span class="nc" id="L97">        newData.setFecha_examen(fechaExamen);</span>
+<span class="nc" id="L98">        newData.setPuntaje_obtenido(Float.valueOf(puntajeObtenido));</span>
+<span class="nc" id="L99">        newData.setNombre_prueba(direccion.replaceAll(&quot;\\.csv$&quot;, &quot;&quot;)); // se quita la extensión del string</span>
+<span class="nc" id="L100">        testRepository.save(newData);</span>
+<span class="nc" id="L101">    }</span>
+
+
+    // aplica promedio a los ultimos examenes de un estudiante
+    public Float obtenerPromedio(String rut){
+<span class="nc" id="L106">        return testRepository.findPuntajePromedio(rut);</span>
+    }
+
+    // obtiene el numero de examenes que rindio un estudiante
+    public int numeroPruebas(String rut){
+<span class="nc" id="L111">        return testRepository.findNumeroPruebas(rut);</span>
+    }
+
+
+//---------
+
+    // aplica promedio a todos los examenes que dio el estudiante
+    public Float obtenerTodoPromedio(String rut){
+<span class="nc" id="L119">        return testRepository.findAllPuntajePromedio(rut);</span>
+    }
+    public ArrayList&lt;TestEntity&gt; obtenerData(){
+<span class="nc" id="L122">        return (ArrayList&lt;TestEntity&gt;) testRepository.findAll();</span>
+    }
+
+    // eliminar BD
+    public void eliminarData(ArrayList&lt;TestEntity&gt; datas){
+<span class="nc" id="L127">        testRepository.deleteAll(datas);</span>
+<span class="nc" id="L128">    }</span>
+
+
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

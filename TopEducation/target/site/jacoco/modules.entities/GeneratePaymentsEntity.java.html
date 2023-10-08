@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GeneratePaymentsEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">modules.entities</a> &gt; <span class="el_source">GeneratePaymentsEntity.java</span></div><h1>GeneratePaymentsEntity.java</h1><pre class="source lang-java linenums">package modules.entities;
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;pago&quot;)
+<span class="nc" id="L13">@AllArgsConstructor</span>
+<span class="fc" id="L14">@NoArgsConstructor</span>
+<span class="pc bnc" id="L15" title="All 78 branches missed.">@Data</span>
+public class GeneratePaymentsEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
+<span class="nc" id="L21">    private Long id;</span>
+
+<span class="fc" id="L23">    private String tipo_pago;</span>
+
+<span class="fc" id="L25">    private Integer numero_cuota;</span>
+
+<span class="fc" id="L27">    private Float monto_total_aracel;  // esto cambia según es contado o en cuotas</span>
+
+<span class="nc" id="L29">    private Float matricula;</span>
+
+<span class="nc" id="L31">    private Float monto_pagado;</span>
+
+<span class="nc" id="L33">    private LocalDateTime ultimo_pago;</span>
+
+<span class="nc" id="L35">    private Float saldo_devuelto;  // esto guarda lo que se le tiene que devolver al alumno por puntaje</span>
+
+    // para asociarlo con un estudiante
+    @ManyToOne
+    @JoinColumn(name = &quot;id_estudiante&quot;, nullable = false)
+<span class="fc" id="L40">    private StudentEntity estudiante;</span>
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
