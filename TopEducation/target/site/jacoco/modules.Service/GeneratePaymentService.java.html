@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GeneratePaymentService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">modules.Service</a> &gt; <span class="el_source">GeneratePaymentService.java</span></div><h1>GeneratePaymentService.java</h1><pre class="source lang-java linenums">package modules.Service;
+
+import modules.entities.GeneratePaymentsEntity;
+import modules.entities.StudentEntity;
+import modules.repositories.GeneratePaymentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+<span class="fc" id="L12">public class GeneratePaymentService {</span>
+
+    @Autowired
+    GeneratePaymentRepository generatePaymentRepository;
+
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    CuotaService cuotaService;
+
+    @Autowired
+    TestService testService;
+
+
+
+    // verifica si se cumplen las condiciones para generar un pago
+    public String verificarGuardarPago(Long id_estudiante, Integer numeroCuotas, String tipoPago){
+<span class="fc" id="L30">        StudentEntity s = studentService.encontrarId(id_estudiante);</span>
+
+<span class="fc" id="L32">        GeneratePaymentsEntity g = generatePaymentRepository.findByStudentId(id_estudiante);</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if(g != null){</span>
+<span class="nc" id="L34">            return &quot;Este estudiante ya tiene un pago registrado&quot;;</span>
+        }
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if(numeroCuotas &lt;= 0){</span>
+<span class="nc" id="L38">            return &quot;El número de cuotas debe de ser positivo&quot;;</span>
+        }
+
+<span class="pc bpc" id="L41" title="3 of 4 branches missed.">        if(tipoPago.equals(&quot;contado&quot;) &amp;&amp; numeroCuotas != 1){</span>
+<span class="nc" id="L42">            return &quot;En pagos al contado no deben de hacer más de 1 cuota&quot;;</span>
+        }
+
+<span class="pc bpc" id="L45" title="3 of 4 branches missed.">        switch (s.getTipo_escuela()){</span>
+            case &quot;municipal&quot;:
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">                if(numeroCuotas &gt; 10){</span>
+<span class="nc" id="L48">                    return &quot;Para tipo de escuela municipal se ingreso más de 10 cuotas&quot;;</span>
+                }
+                break;
+
+            case &quot;subvencionado&quot;:
+<span class="nc bnc" id="L53" title="All 2 branches missed.">                if(numeroCuotas &gt; 7){</span>
+<span class="nc" id="L54">                    return &quot;Para tipo de escuela subvencionado se ingreso más de 7 cuotas&quot;;</span>
+                }
+                break;
+
+            case &quot;privado&quot;:
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                if(numeroCuotas &gt; 4){</span>
+<span class="nc" id="L60">                    return &quot;Para tipo de escuela privado se ingreso más de 4 cuotas&quot;;</span>
+                }
+                break;
+
+            default:
+<span class="nc" id="L65">                return &quot;Error en tipo de escuela&quot;;</span>
+        }
+
+<span class="fc" id="L68">        return &quot;El pago se generó con éxito.&quot;;</span>
+    }
+
+    // genera un pago
+    public void guardarPago(Long id_estudiante, Integer numeroCuotas, String tipoPago){
+<span class="fc" id="L73">        GeneratePaymentsEntity g = new GeneratePaymentsEntity();  // la ultima fecha de pago es null</span>
+<span class="fc" id="L74">        StudentEntity s = studentService.encontrarId(id_estudiante);</span>
+<span class="fc" id="L75">        g.setEstudiante(s);</span>
+<span class="fc" id="L76">        g.setTipo_pago(tipoPago);</span>
+<span class="fc" id="L77">        g.setNumero_cuota(numeroCuotas);</span>
+<span class="fc" id="L78">        g.setMatricula(70000F);</span>
+<span class="fc" id="L79">        g.setMonto_pagado(0F);  // comienza con cero</span>
+
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if(g.getTipo_pago().equals(&quot;contado&quot;)){</span>
+<span class="nc" id="L82">            g.setMonto_total_aracel((float) 750000);</span>
+        }else{
+<span class="fc" id="L84">            g.setMonto_total_aracel(1500000 * (1 - descuentoAnioEgreso(g) - descuentoTipoEscuela(g))/ numeroCuotas);</span>
+        }
+
+<span class="fc" id="L87">        generatePaymentRepository.save(g);</span>
+<span class="fc" id="L88">        cuotaService.generarCuotas(g);</span>
+<span class="fc" id="L89">    }</span>
+
+
+    // los descuentos por tipo de escuela
+    public float descuentoTipoEscuela(GeneratePaymentsEntity g){
+<span class="fc" id="L94">        StudentEntity s = g.getEstudiante();</span>
+<span class="pc bpc" id="L95" title="3 of 4 branches missed.">        switch (s.getTipo_escuela()){</span>
+<span class="fc" id="L96">            case &quot;municipal&quot;: return (float) 0.2;</span>
+<span class="nc" id="L97">            case &quot;subvencionado&quot;: return (float) 0.1;</span>
+<span class="nc" id="L98">            case &quot;privado&quot;: return 0;</span>
+<span class="nc" id="L99">            default: return -1;</span>
+        }
+    }
+
+    // los descuentos por año de egreso
+    public float descuentoAnioEgreso(GeneratePaymentsEntity g){
+<span class="fc" id="L105">        StudentEntity s = g.getEstudiante();</span>
+<span class="fc" id="L106">        LocalDateTime fecha_Actual = LocalDateTime.now();</span>
+<span class="fc" id="L107">        int diferenciaAnios = fecha_Actual.getYear() - Integer.parseInt(s.getAnio_egreso());</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if(diferenciaAnios &lt; 1){</span>
+<span class="fc" id="L109">            return (float) 0.15;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        }else if(diferenciaAnios &lt;= 2){</span>
+<span class="nc" id="L111">            return (float) 0.08;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        }else if(diferenciaAnios &lt;= 4){</span>
+<span class="nc" id="L113">            return (float) 0.04;</span>
+        }else{
+<span class="nc" id="L115">            return 0;</span>
+        }
+    }
+
+    // obtener pago por id estudiante
+    public GeneratePaymentsEntity obtenerPagoPorIdEstudiante(Long id_estudiante){
+<span class="fc" id="L121">        return generatePaymentRepository.findByStudentId(id_estudiante);</span>
+    }
+
+
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,9 +1,9 @@
 package modules.controllers;
 
 import modules.entities.CuotaEntity;
-import modules.CuotaService;
-import modules.GeneratePaymentService;
-import modules.StudentService;
+import modules.Service.CuotaService;
+import modules.Service.GeneratePaymentService;
+import modules.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

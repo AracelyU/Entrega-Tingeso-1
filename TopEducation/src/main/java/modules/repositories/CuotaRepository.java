@@ -36,21 +36,9 @@ public interface CuotaRepository extends CrudRepository<CuotaEntity, Long> {
     @Query("SELECT SUM(c.valor_cuota) FROM CuotaEntity c WHERE c.estado_cuota = 'pendiente' AND c.pago.estudiante.id = :id_estudiante")
     Float findSaldoPorPagar(@Param("id_estudiante") Long id_estudiante);
 
-    //--------
-
     // encontrar cuota por id_cuota
     CuotaEntity findCuotaEntitiesById(Long id);
 
-    // seleccionar cuotas por id de pago
-    @Query("SELECT c FROM CuotaEntity c WHERE c.pago.id = :generatePaymentId")
-    ArrayList<CuotaEntity> findCuotasByGeneratePaymentId(@Param("generatePaymentId") Long generatePaymentId);
 
-    // seleccionar cuotas por id de pago y que esten pendientes
-    @Query("SELECT c FROM CuotaEntity c WHERE c.estado_cuota = 'pendiente' AND c.pago.id = :generatePaymentId")
-    ArrayList<CuotaEntity> findCuotasPendientesByGeneratePaymentId(@Param("generatePaymentId") Long generatePaymentId);
-
-    // seleccionar el ultimo pago (por revisar)
-    @Query("SELECT MAX(c.fecha_pago) FROM CuotaEntity c")
-    LocalDateTime findLastPayment();
 
 }
