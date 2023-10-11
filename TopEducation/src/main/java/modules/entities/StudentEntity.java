@@ -27,15 +27,12 @@ public class StudentEntity {
 
     private String apellido_estudiante;
 
-    private LocalDate fecha_nacimiento;   //  @RequesParam("") @DateTimeFormat(pattern = "yyyy-mm-dd") Date fechaN
-
-    //private String fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
 
     private String tipo_escuela;
 
     private String nombre_escuela;
 
     private String anio_egreso;
-
 
 }

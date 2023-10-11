@@ -39,6 +39,21 @@ public class StudentService {
     // encontrar estudiante por su id
     public StudentEntity encontrarId(Long id){ return studentRepository.findByid(id); }
 
+    // encontrar estudiante por su rut
+    public StudentEntity encontrarRut(String rut){ return studentRepository.findByRut(rut); }
+
+
+    // verifica si no se ha registrado un estudiante con el mismo rut
+    public String verificarRut(String rut){
+        ArrayList<StudentEntity> student = obtenerEstudiantes();
+        for(StudentEntity s : student){
+            if(s.getRut().equals(rut)){
+                return "Rut repetido";
+            }
+        }
+        return "no hay rut repetido";
+    }
+
 
 
 }

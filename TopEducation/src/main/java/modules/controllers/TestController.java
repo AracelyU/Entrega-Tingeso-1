@@ -25,23 +25,16 @@ public class TestController{
         public String upload(@RequestParam("file") MultipartFile file, Model model) {
             testService.guardar(file);
             String filename = file.getOriginalFilename();
-            //redirectAttributes.addFlashAttribute("mensaje", "¡Archivo cargado correctamente!");
             String mensaje = testService.leerCsv(filename);
-            model.addAttribute("mensaje", mensaje);
+
+            if(mensaje.equals("Archivo leido exitosamente")){
+                model.addAttribute("mensaje", mensaje);
+            }else{
+                model.addAttribute("error", mensaje);
+            }
+
             return "cargarCSV";
         }
-
-
-        /*
-        @GetMapping("/fileInformation")
-        public String listar(Model model) {
-            ArrayList<TestEntity> datas = testService.obtenerData();
-            model.addAttribute("datas", datas);
-            return "fileInformation";
-        }
-
-         */
-
 
 
 }

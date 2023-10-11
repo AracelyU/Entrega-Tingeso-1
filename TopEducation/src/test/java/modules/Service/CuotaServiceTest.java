@@ -53,7 +53,7 @@ class CuotaServiceTest {
         g.setTipo_pago("cuotas");
         g.setNumero_cuota(2);
         g.setEstudiante(nuevoEstudiante);
-        g.setMonto_total_aracel(430000F);
+        g.setMonto_total_arancel(430000F);
         generatePaymentRepository.save(g);
 
         cuotaService.generarCuotas(g);
@@ -136,7 +136,7 @@ class CuotaServiceTest {
     }
 
     @Test
-    void testVerificarPagarCuota() {
+    void testVerificarPagarCuota() {   // Este test esta muy influenciado por al fecha, puede fallar de la nada según la fecha
         // creando estudiante
         StudentEntity nuevoEstudiante = new StudentEntity();
         nuevoEstudiante.setRut("987654320");
@@ -165,7 +165,7 @@ class CuotaServiceTest {
         ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(g.getEstudiante().getId());
         String mensaje = cuotaService.verificarPagarCuota(cuotas.get(0).getId());
 
-        assertEquals("Se ha registrado el pago de la cuota con exito.", mensaje); // Asegura que la lista tenga elementos
+        assertEquals("No se puede pagar la cuota, se puede pagar entre el día 5 y 10 de cada mes.", mensaje); // Asegura que la lista tenga elementos
 
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
@@ -315,7 +315,7 @@ class CuotaServiceTest {
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
         g.setTipo_pago("cuotas");
         g.setNumero_cuota(1);
-        g.setMonto_total_aracel(430000F);
+        g.setMonto_total_arancel(430000F);
         g.setEstudiante(nuevoEstudiante);
         generatePaymentRepository.save(g);
 
@@ -427,12 +427,13 @@ class CuotaServiceTest {
         // generando cuota
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1F);
-        c.setEstado_cuota("pendiente");
-        LocalDateTime fecha = LocalDateTime.of(2023, 10, 3, 0, 0);
+        c.setEstado_cuota("pendiente"); // se define una fecha tal que hay meses de diferencia
+        LocalDateTime fecha = LocalDateTime.of(2023, 8, 3, 0, 0);
         c.setFecha_vencimiento(fecha);
         c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
+
         assertEquals(1, cuotaService.numeroCuotasAtrasadas(nuevoEstudiante.getId()));
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);

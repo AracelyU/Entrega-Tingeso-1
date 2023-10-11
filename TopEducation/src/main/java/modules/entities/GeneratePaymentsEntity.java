@@ -24,11 +24,9 @@ public class GeneratePaymentsEntity {
 
     private Integer numero_cuota;
 
-    private Float monto_total_aracel;  // esto cambia según es contado o en cuotas
+    private Float monto_total_arancel;
 
     private Float matricula;
-
-    private Float monto_pagado;
 
     private LocalDateTime ultimo_pago;
 

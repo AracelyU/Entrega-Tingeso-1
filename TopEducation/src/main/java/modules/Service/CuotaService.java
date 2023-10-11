@@ -34,7 +34,7 @@ public class CuotaService {
                 CuotaEntity c = new CuotaEntity();
                 c.setEstado_cuota("pendiente");
                 c.setNumero_cuota(i);
-                c.setValor_cuota(g.getMonto_total_aracel());
+                c.setValor_cuota(g.getMonto_total_arancel());
                 c.setPago(g);
                 c.setFecha_vencimiento(fechaActual.plusMonths(i).withDayOfMonth(10).truncatedTo(ChronoUnit.DAYS)); // trunca a días
                 cuotaRepository.save(c);
@@ -42,7 +42,7 @@ public class CuotaService {
 
         }else{  // para contado
             CuotaEntity p = new CuotaEntity();
-            p.setValor_cuota(g.getMonto_total_aracel());
+            p.setValor_cuota(g.getMonto_total_arancel());
             p.setNumero_cuota(1);
             p.setFecha_vencimiento(fechaActual.plusMonths(1).withDayOfMonth(10).truncatedTo(ChronoUnit.DAYS));
             p.setEstado_cuota("pendiente");
@@ -67,12 +67,10 @@ public class CuotaService {
         LocalDateTime fecha_Actual = LocalDateTime.now();
         CuotaEntity c = cuotaRepository.findCuotaEntitiesById(id);
 
-        /* COMENTADO PARA QUE NO ME LIMITE PAGAR ENTRE 5 Y 10 DE CADA MES
-        // verificar si el día esta entre el día 5 y 10
+        // verificar si el día no esta entre el día 5 y 10
         if(fecha_Actual.getDayOfMonth() < 5 || fecha_Actual.getDayOfMonth() > 10){
             return "No se puede pagar la cuota, se puede pagar entre el día 5 y 10 de cada mes.";
         }
-        */
 
         // verificar si ha pagado la cuota anteriores antes de elegir pagar esta cuota
         ArrayList<CuotaEntity> cuotas = encontrarCuotasPorIdEstudiante(c.getPago().getEstudiante().getId());
@@ -94,10 +92,6 @@ public class CuotaService {
         LocalDateTime fechaActual = LocalDateTime.now();
         CuotaEntity c = cuotaRepository.findCuotaEntitiesById(id);
         c.setEstado_cuota("pagado");
-        //GeneratePaymentsEntity g = c.getPago();
-        //Float monto = g.getMonto_pagado() + c.getValor_cuota();  // se le suma lo que se pago de cuota a monto pagado
-        //c.getPago().setMonto_pagado(monto);
-        //c.setValor_cuota(0F); // ahora se paga la cuota
         c.setFecha_pago(fechaActual);
         c.getPago().setUltimo_pago(fechaActual);
         cuotaRepository.save(c);
@@ -124,13 +118,22 @@ public class CuotaService {
             // calcular promedio
             Float promedio = testService.obtenerPromedio(s.getRut());
             ArrayList<CuotaEntity> cuotas = encontrarCuotasPendientesPorIdEstudiante(s.getId());
+
+
+            // si el estudiante tiene pago al contado aún no pagado se le añade lo obtenido al monto devuelto
+            if(cuotas.get(0).getPago().getTipo_pago().equals("cuota") && cuotas.get(0).getEstado_cuota().equals("pendiente")){
+                CuotaEntity c_contado = cuotas.get(0);
+                Float monto_nuevo = c_contado.getValor_cuota() * descuentoPuntajePromedio(promedio);
+                c_contado.getPago().setSaldo_devuelto(monto_nuevo);
+                cuotaRepository.save(c_contado);
+            }
+
+            // si es en cuotas se aplica a todas las cuotas pendientes
             for(CuotaEntity c : cuotas){
                 // aplicar descuento  a las cuotas
-                if(Objects.equals(c.getEstado_cuota(), "pendiente")) {
-                    Float monto_nuevo = c.getValor_cuota() * (1 - descuentoPuntajePromedio(promedio));
-                    c.setValor_cuota(monto_nuevo);
-                    cuotaRepository.save(c);  // FALTA HACER QUE EL DINERO QUE SE REDUJO SE GUARDE EN PAGO PARA EL CASO DE QUE HAYA PAGADO AL CONTADO
-                }
+                Float monto_nuevo = c.getValor_cuota() * (1 - descuentoPuntajePromedio(promedio));
+                c.setValor_cuota(monto_nuevo);
+                cuotaRepository.save(c);
             }
         }
     }
@@ -169,7 +172,7 @@ public class CuotaService {
         LocalDateTime fecha_actual = LocalDateTime.now();
         int diferencia_anio = c.getFecha_vencimiento().getYear()- fecha_actual.getYear();
 
-        if(diferencia_anio < 0){
+        if(diferencia_anio < 0){ // no se esta pagando dentro del año
             return 0.015F;
         }
 
@@ -201,24 +204,21 @@ public class CuotaService {
         ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotaEntitiesByIdStudent(id_estudiante);
         for(CuotaEntity c : cuotas){
             Float monto = c.getValor_cuota() * (1 + descuentoAtrasoCuotas(c));
-            c.setValor_cuota(monto);  // VER COMO AFECTA EL CAMBIO DE INTERES AL MONTO DE LO PAGADO DEL PAGO
+            c.setValor_cuota(monto);
             cuotaRepository.save(c);
-
         }
     }
 
     public Integer numeroCuotasAtrasadas(Long id_estudiante){
-        ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotaEntitiesByIdStudent(id_estudiante);
+        ArrayList<CuotaEntity> cuotas = encontrarCuotasPendientesPorIdEstudiante(id_estudiante);
         Integer atrasos = 0;
         for(CuotaEntity c : cuotas){
-            LocalDateTime fecha_actual = LocalDateTime.now();
-            if(fecha_actual.isAfter(c.getFecha_vencimiento())){// la cuota esta vencida
+            if(descuentoAtrasoCuotas(c) != 0F){ // si el valor era cero no tenía atrados
                 atrasos++;
             }
         }
         return atrasos;
     }
-
 
 
 }

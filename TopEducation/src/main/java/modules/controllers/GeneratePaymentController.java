@@ -27,7 +27,6 @@ public class GeneratePaymentController {
     @Autowired
     private CuotaService cuotaService;
 
-
     @Autowired
     private TestService testService;
 
@@ -46,8 +45,11 @@ public class GeneratePaymentController {
         String mensaje = generatePaymentService.verificarGuardarPago(id, numeroCuotas, opcionPago);
         if (mensaje.equals("El pago se generó con éxito.")) {
             generatePaymentService.guardarPago(id, numeroCuotas, opcionPago);
+            model.addAttribute("mensaje", mensaje);
+        }else{
+            model.addAttribute("error", mensaje);
         }
-        model.addAttribute("mensaje", mensaje);
+
         ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
         model.addAttribute("students", estudiantes);
         return "generarPago";
@@ -86,14 +88,6 @@ public class GeneratePaymentController {
         return "mostrarReporte";
     }
 
-    /*
-    @PostMapping("/aplicarPuntaje")
-    public String aplicandoPuntaje(){
-        generatePaymentService.aplicarDescuentoPrueba();
-        return "cargarCSV";
-    }
-
-     */
 
 
 }

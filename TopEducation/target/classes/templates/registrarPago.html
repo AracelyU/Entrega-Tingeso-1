@@ -52,6 +52,11 @@
   <p th:text="${mensaje}"></p>
 </div>
 
+<!-- Mostrar mensaje de error -->
+<div th:if="${error}" class="alert alert-danger" style="font-size: 1em; text-align: center;">
+  <p th:text="${error}"></p>
+</div>
+
 <hr>
 <table class="table">
   <thead class="thead-dark">

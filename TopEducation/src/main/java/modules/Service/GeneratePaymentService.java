@@ -24,10 +24,11 @@ public class GeneratePaymentService {
     TestService testService;
 
 
-
     // verifica si se cumplen las condiciones para generar un pago
     public String verificarGuardarPago(Long id_estudiante, Integer numeroCuotas, String tipoPago){
         StudentEntity s = studentService.encontrarId(id_estudiante);
+
+        // FALTA VER QUE SOLO SE PUEDAN GENERAR PAGOS ANTES DEL INICIO DE CLASE
 
         GeneratePaymentsEntity g = generatePaymentRepository.findByStudentId(id_estudiante);
         if(g != null){
@@ -76,14 +77,12 @@ public class GeneratePaymentService {
         g.setTipo_pago(tipoPago);
         g.setNumero_cuota(numeroCuotas);
         g.setMatricula(70000F);
-        g.setMonto_pagado(0F);  // comienza con cero
 
         if(g.getTipo_pago().equals("contado")){
-            g.setMonto_total_aracel((float) 750000);
+            g.setMonto_total_arancel(750000F);
         }else{
-            g.setMonto_total_aracel(1500000 * (1 - descuentoAnioEgreso(g) - descuentoTipoEscuela(g))/ numeroCuotas);
+            g.setMonto_total_arancel(1500000 * (1 - descuentoAnioEgreso(g) - descuentoTipoEscuela(g)) / numeroCuotas);
         }
-
         generatePaymentRepository.save(g);
         cuotaService.generarCuotas(g);
     }

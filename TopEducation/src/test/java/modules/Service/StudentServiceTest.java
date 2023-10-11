@@ -54,8 +54,20 @@ class StudentServiceTest {
         studentService.guardarEstudiante("987654321", "Alex", "Van",
                 LocalDate.of(2023, 5, 13), "privado", "Escuela 1", "2023");
 
-        StudentEntity estudiante = studentRepository.findByRut("987654321");
+        StudentEntity estudiante = studentService.encontrarRut("987654321");
         assertEquals("Alex", studentService.encontrarId(estudiante.getId()).getNombre_estudiante());
+        studentRepository.deleteAll();
+    }
+
+
+    @Test
+    void encontrarRut(){
+        studentRepository.deleteAll();
+        studentService.guardarEstudiante("987654321", "Alex", "Van",
+                LocalDate.of(2023, 5, 13), "privado", "Escuela 1", "2023");
+
+        StudentEntity estudiante = studentService.encontrarRut("987654321");
+        assertEquals("Alex", estudiante.getNombre_estudiante());
         studentRepository.deleteAll();
     }
 

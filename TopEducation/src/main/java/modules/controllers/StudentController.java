@@ -39,10 +39,14 @@ public class StudentController {
                                   @RequestParam("anioEgreso") String anioEgreso,
                                   Model model) {
 
-        // verificar que el estudiantes esta bien
-        model.addAttribute("mensaje", "El estudiante se generó con éxito.");
-        studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, fechaNacimiento, tipoEscuela, nombreEscuela, anioEgreso);
-        return "redirect:/nuevoEstudiante";
+        if(studentService.verificarRut(rut).equals("Rut repetido")){
+            model.addAttribute("error", "El estudiante no se pudo registrar, el rut ya esta registrado.");
+        }else{
+            studentService.guardarEstudiante(rut, nombreEstudiante, apellidoEstudiante, fechaNacimiento, tipoEscuela, nombreEscuela, anioEgreso);
+            model.addAttribute("mensaje", "El estudiante se registró con éxito.");
+        }
+
+        return "nuevoEstudiante";
     }
 
 

@@ -12,7 +12,15 @@
 </head>
 <body>
 
+<hr>
 <h1><b>Cargar el archivo de datos</b></h1>
+<hr>
+
+<div class="text-center mt-3">
+    <h5><b>Recuerde que debe cargar un archivo Excel de extensión .csv!</b></h5>
+    <h5><b>Solo presione 'Aplicar Puntaje' cuando haya ingresado todos los archivos.</b></h5>
+</div>
+
 <hr>
 
 <!-- Mostrar mensaje de éxito si existe -->
@@ -20,29 +28,42 @@
     <p th:text="${mensaje}"></p>
 </div>
 
+<!-- Mostrar mensaje de error -->
+<div th:if="${error}" class="alert alert-danger" style="font-size: 1em; text-align: center;">
+    <p th:text="${error}"></p>
+</div>
+
+
+<!-- Mostrar mensaje de éxito si existe -->
+<div th:if="${mensaje2}" class="alert alert-success" style="font-size: 1em; text-align: center;">
+    <p th:text="${mensaje2}"></p>
+</div>
+
+<!-- Mostrar mensaje de error -->
+<div th:if="${error2}" class="alert alert-danger" style="font-size: 1em; text-align: center;">
+    <p th:text="${error2}"></p>
+</div>
+
+
 <div class="container">
     <form th:action="@{/cargarCSV}" method="POST" enctype="multipart/form-data">
 
         <div style="background-color: #9aceff; padding: 10px;">
             <input type="file" class="form-control mb-2" name="file" accept=".csv">
             <br>
-            <div class="d-flex justify-content-between">
-                <input class="btn btn-primary" type="submit" value="Cargar el archivo a la Base de Datos">
-                <form th:action="@{/aplicarDescuentoPromedio}" method="POST">
-                    <button type="submit" class="btn btn-primary">Aplicar Puntaje</button>
-                </form>
-            </div>
+            <input class="btn btn-primary text-center" type="submit" value="Cargar el archivo a la Base de Datos">
+            <br>
         </div>
     </form>
-
+    <hr>
+    <div class="container">
+        <form th:action="@{/aplicarDescuentoPromedio}" method="POST">
+            <button type="submit" class="btn btn-primary">Aplicar Puntaje</button>
+        </form>
+    </div>
 </div>
-<br><br>
-<div class="text-center mt-3">
-    <h5><b>Recuerde que debe cargar un archivo Excel de extensión .csv!</b></h5>
-    <h5><b>Solo presione 'Aplicar Puntaje' cuando haya ingresado todos los archivos.</b></h5>
-</div>
 
-<br><br>
+<br>
 <form action="/menu" method="get" class = "text-center">
     <input class="btn btn-secondary text-center"  type="submit" value="Volver al menú principal">
 </form>

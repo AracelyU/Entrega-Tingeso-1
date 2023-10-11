@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Controller
@@ -18,12 +19,6 @@ public class CuotaController {
 
     @Autowired
     CuotaService cuotaService;
-
-    @Autowired
-    GeneratePaymentService generatePaymentService;
-
-    @Autowired
-    StudentService studentService;
 
     @GetMapping("/mostrarPago")
     public String monstrandoPago(){
@@ -46,15 +41,16 @@ public class CuotaController {
         return "registrarPago";
     }
 
-
     @PostMapping("/pagarCuota")
     public String registrarCuota(@RequestParam("cuota_id") Long id, Model model){
 
         String mensaje = cuotaService.verificarPagarCuota(id);
         if (mensaje.equals("Se ha registrado el pago de la cuota con exito.")) {
             cuotaService.pagarCuota(id); // cambiar estado de cuota a pagado
+            model.addAttribute("mensaje", mensaje);
+        }else {
+            model.addAttribute("error", mensaje);
         }
-        model.addAttribute("mensaje", mensaje);
 
         // devolver información anterior
         Long id_estudiante = cuotaService.obtenerCuotaPorId(id).getPago().getEstudiante().getId();
@@ -66,8 +62,16 @@ public class CuotaController {
 
     @PostMapping("/aplicarDescuentoPromedio")
     public String aplicarDescuentoBD(Model model){
+
+        // Verifica si la fecha actual no está entre el 5 y el 10 del mes
+        int dayOfMonth = LocalDateTime.now().getDayOfMonth();
+        if (dayOfMonth >= 5 && dayOfMonth <= 10) {
+            model.addAttribute("error", "No se puede aplicar descuentos mientras se tramitan los pagos");
+        }
+
         cuotaService.aplicarDescuentoPromedio();
         model.addAttribute("mensaje", "Se ha aplicado el descuento por puntaje a toda la BD");
+
         return "cargarCSV";
     }
 

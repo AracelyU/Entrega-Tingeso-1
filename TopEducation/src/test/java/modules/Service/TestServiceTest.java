@@ -54,7 +54,7 @@ class TestServiceTest {
         prueba1.setRut("987654321");
         prueba2.setRut("987654321");
         prueba1.setNombre_prueba("Matematicas");
-        prueba2.setNombre_prueba("Lenguaje");
+        prueba2.setNombre_prueba("Lenguaje.csv");
         prueba1.setFecha_examen("2023/10/04");
         prueba2.setFecha_examen("2023/10/04");
         prueba1.setPuntaje_obtenido(648F);
@@ -87,7 +87,7 @@ class TestServiceTest {
         prueba1.setRut("987654321");
         prueba2.setRut("987654321");
         prueba1.setNombre_prueba("Matematicas");
-        prueba2.setNombre_prueba("Lenguaje");
+        prueba2.setNombre_prueba("Lenguaje.csv");
         prueba1.setFecha_examen("2023/10/04");
         prueba2.setFecha_examen("2023/10/04");
         prueba1.setPuntaje_obtenido(648F);
