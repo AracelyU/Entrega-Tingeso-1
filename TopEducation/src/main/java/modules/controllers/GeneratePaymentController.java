@@ -74,8 +74,6 @@ public class GeneratePaymentController {
         Float total_arancel = saldo_pagado + saldo_pagar;
         Integer cuotas_atraso = cuotaService.numeroCuotasAtrasadas(s.getId());
 
-        // faltan la cantidad de cuotas por retraso
-
         model.addAttribute("pagos", g);
         model.addAttribute("nro_pruebas", nro_pruebas);
         model.addAttribute("puntaje_promedio", puntaje_promedio);

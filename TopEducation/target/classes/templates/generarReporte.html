@@ -6,17 +6,6 @@
     <title>Generar Reporte</title>
 
     <style>
-        /* Estilo para la franja superior */
-        .franja-superior {
-            background-color: #9aceff;
-            height: 5cm; /* Altura de la franja superior */
-        }
-
-        /* Estilo para la franja inferior */
-        .franja-inferior {
-            background-color: #9aceff;
-            height: 5cm; /* Altura de la franja inferior */
-        }
 
         /* Estilos para centrar y aumentar el tamaño */
         body {
@@ -38,11 +27,10 @@
     </style>
 </head>
 <body>
-<div class="franja-superior"></div>
 
-<h1>Seleccione un estudiante para generar su reporte</h1>
-<br><br>
+
 <div class="container-center">
+    <h3>Seleccione un estudiante para generar su reporte</h3>
     <form th:action="@{/generarReporte}" method="POST">
         <label>
             <select name="id_estudiante" required>
@@ -56,7 +44,10 @@
     </form>
 </div>
 
-<div class="franja-inferior"></div>
+<br><br>
+<form action="/menu" method="get" class = "text-center">
+    <input class="btn btn-secondary text-center"  type="submit" value="Volver al menú principal">
+</form>
 
 <br>
 

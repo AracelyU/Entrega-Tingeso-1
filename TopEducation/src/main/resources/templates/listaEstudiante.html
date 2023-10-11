@@ -7,13 +7,6 @@
 </head>
 <body>
 <div class="container-sm">
-    <h1>Listado de Estudiantes</h1>
-
-    <div class="d-flex justify-content-between">
-        <a class="btn btn-secondary" href="http://localhost:8090/TopEducationWeb" role="button">Volver al Menú Principal</a>
-        <a class="btn btn-secondary" href="http://localhost:8090/nuevoEstudiante" role="button">Añadir Estudiante</a>
-    </div>
-
     <style>
 
         h1 { /* Se centra titulo h1 */
@@ -40,6 +33,19 @@
             background-color: #f2f2f2; /* Color de fondo para filas pares */
         }
     </style>
+
+    <hr>
+    <h1>Listado de Estudiantes</h1>
+
+    <div class="d-flex justify-content-between">
+        <form action="/menu" method="get">
+            <input class="btn btn-secondary"  type="submit" value="Volver al menú principal">
+        </form>
+
+        <form action="/nuevoEstudiante" method="get">
+            <input class="btn btn-secondary"  type="submit" value="Añadir Estudiante">
+        </form>
+    </div>
 
     <hr>
     <table class="table">

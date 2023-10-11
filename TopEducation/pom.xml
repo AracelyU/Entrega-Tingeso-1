@@ -19,6 +19,7 @@
 			src/main/java/modules/entities/*,
 			src/main/java/modules/controllers/*,
 			src/main/java/modules/repositories/*
+			src/main/java/TopEducation
 		</sonar.exclusions>
 	</properties>
 	<dependencies>

@@ -37,11 +37,28 @@
         </style>
     </head>
 <body>
+
+<hr>
 <div class="title">TopEducationWeb</div>
 <div class="btn-container">
-    <a class="btn btn-primary btn-lg mb-2" href="http://localhost:8090/listaEstudiante" role="button">Mostrar Lista de Estudiantes</a>
-    <a class="btn btn-success btn-lg mb-2" href="http://localhost:8090/generarReporte" role="button">Generar Reportes</a>
-    <a class="btn btn-info btn-lg mb-2" href="http://localhost:8090/cargarCSV" role="button">Cargar CSV</a>
+    <br>
+    <form action="/listaEstudiante" method="get">
+        <input class="btn btn-success btn-lg mb-2"  type="submit" value="Ver Estudiantes">
+    </form>
+
+    <form action="/generarPago" method="get">
+        <input class="btn btn-success btn-lg mb-2"  type="submit" value="Generar Pago">
+    </form>
+
+    <form action="/generarReporte" method="get">
+        <input class="btn btn-success btn-lg mb-2"  type="submit" value="Generar Reporte">
+    </form>
+
+    <form action="/cargarCSV" method="get">
+        <input class="btn btn-success btn-lg mb-2"  type="submit" value="Cargar CSV">
+    </form>
+
+    </hr>
 </div>
 
 </body>

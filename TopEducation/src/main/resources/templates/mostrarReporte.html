@@ -7,11 +7,90 @@
 </head>
 <body>
 
+<div class="container mt-4">
+    <h1 class="text-center">Reporte Estudiante</h1>
+    <hr>
+
+    <form>
+        <!-- Iterar a través de los pagos y mostrar cada uno en un formulario estético -->
+        <th:block th:each="pago : ${pagos}">
+            <div class="border p-3 mb-3">
+                <div class="form-group">
+                    <label for="rut">RUT</label>
+                    <input type="text" class="form-control" id="rut" th:value="${pago.getEstudiante().getRut()}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombreEstudiante">Nombre Estudiante</label>
+                    <input type="text" class="form-control" id="nombreEstudiante" th:value="${pago.getEstudiante().getNombre_estudiante() + ' ' + pago.getEstudiante().getApellido_estudiante()}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="nroExamenes">Nro Examenes Rendidos</label>
+                    <input type="text" class="form-control" id="nroExamenes" th:value="${nro_pruebas}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="puntajeProm">Promedio Puntaje Exámenes</label>
+                    <input type="text" class="form-control" id="puntajeProm" th:value="${puntaje_promedio}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="totalArancel">Monto Total Del Arancel A Pagar</label>
+                    <input type="text" class="form-control" id="totalArancel" th:value="${total_arancel}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoPago">Tipo Pago</label>
+                    <input type="text" class="form-control" id="tipoPago" th:value="${pago.getTipo_pago()}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuotasPactadas">Nro Total De Cuotas Pactadas</label>
+                    <input type="text" class="form-control" id="cuotasPactadas" th:value="${pago.getNumero_cuota()}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuotasPagadas">Nro Cuotas Pagadas</label>
+                    <input type="text" class="form-control" id="cuotasPagadas" th:value="${cuotas_pagadas}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="montoPagado">Monto Total Pagado</label>
+                    <input type="text" class="form-control" id="montoPagado" th:value="${saldo_pagado}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="ultimoPago">Último Pago</label>
+                    <input type="text" class="form-control" id="ultimoPago" th:value="${pago.getUltimo_pago()}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="saldoPorPagar">Saldo Por Pagar</label>
+                    <input type="text" class="form-control" id="saldoPorPagar" th:value="${saldo_pagar}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuotasAtraso">Cuotas Atrasadas</label>
+                    <input type="text" class="form-control" id="cuotasAtraso" th:value="${cuotas_atraso}" readonly>
+                </div>
+
+
+            </div>
+        </th:block>
+    </form>
+</div>
+
+
+<!--
+
 <h1>Reporte Estudiante</h1>
 <hr>
+-->
 
+<!--
 <ul>
-    <!-- Iterar a través de los pagos y mostrar cada uno en un elemento de lista -->
+   Iterar a través de los pagos y mostrar cada uno en un elemento de lista
     <li th:each="pago : ${pagos}">
         <p>RUT: <span th:text="${pago.getEstudiante().getRut()}"></span></p>
         <p>Nombre Estudiante: <span th:text="${pago.getEstudiante().getNombre_estudiante() + ' ' + pago.getEstudiante().getApellido_estudiante()}"></span></p>
@@ -27,6 +106,8 @@
         <p>Cuotas Atrasadas: <span th:text="${cuotas_atraso}"></span></p>
     </li>
 </ul>
+
+-->
 
 </body>
 </html>
