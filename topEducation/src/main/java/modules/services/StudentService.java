@@ -49,4 +49,5 @@ public class StudentService {
         return studentRepository.findByid(id_estudiante);
     }
 
+    public StudentEntity encontrarRut(String rut) {return studentRepository.findByRut(rut);}
 }
