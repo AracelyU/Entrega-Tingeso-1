@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Generar Reporte</title>
+
+    <style>
+
+        /* Estilos para centrar y aumentar el tamaño */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            font-size: 2em; /* Aumentar el tamaño del formulario */
+            text-align: center; /* Centrar el texto dentro del formulario */
+        }
+
+        h1 {
+            text-align: center; /* Centrar el texto de h1 */
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container-center">
+    <h3>Seleccione un estudiante para generar su reporte</h3>
+    <form th:action="@{/generarReporte}" method="POST">
+        <label>
+            <select name="id_estudiante" required>
+                <option value="">Selecciona un Estudiante</option>
+                <option th:each="student : ${students}" th:value="${student.id}">
+                    <span th:text="${student.getNombre_estudiante() + ' ' + student.getApellido_estudiante() + ' '}"></span>
+                </option>
+            </select>
+        </label>
+        <input type="submit" class= "btn btn-primary" value="Generar Reporte">
+    </form>
+</div>
+
+<br><br>
+<form action="/menu" method="get" class = "text-center">
+    <input class="btn btn-secondary text-center"  type="submit" value="Volver al menú principal">
+</form>
+
+<br>
+
+</body>
+</html>

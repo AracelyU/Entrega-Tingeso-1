@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro Estudiante</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        /* Estilos personalizados */
+        .form-container {
+            max-width: 600px; /* Ajusta el ancho según tus necesidades */
+            margin: 0 auto; /* Centra horizontalmente */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<br>
+<div class="d-flex justify-content-center">
+    <form action="/menu" method="get" class="text-center">
+        <input class="btn btn-secondary mx-1" type="submit" value="Volver al menú principal">
+    </form>
+    <form action="/listaEstudiante" method="get" class="text-center">
+        <input class="btn btn-secondary mx-1" type="submit" value="Ver estudiantes">
+    </form>
+</div>
+<br>
+<hr>
+<h1>Formulario de Estudiantes</h1>
+<hr>
+
+<div class="container">
+    <div class="form-container">
+
+
+        <!-- Mostrar mensaje de éxito si existe -->
+        <div th:if="${mensaje}" class="alert alert-success">
+            <p th:text="${mensaje}"></p>
+        </div>
+
+        <!-- Mostrar mensaje de error -->
+        <div th:if="${error}" class="alert alert-danger" style="font-size: 1em; text-align: center;">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form th:action="@{/nuevoEstudiante}" method="POST">
+
+            <h2><b>Registrar nuevo Estudiante</b></h2>
+            <hr/>
+
+            <div class="form-group">
+                <label for="rut"><strong>Rut</strong></label>
+                <input type="text" class="form-control" id="rut" placeholder="Ingrese el rut" name="rut" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nombreEstudiante"><strong>Nombre</strong></label>
+                <input type="text" class="form-control" id="nombreEstudiante" placeholder="Ingrese el nombre" name="nombreEstudiante" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nombreApellido"><strong>Apellido</strong></label>
+                <input type="text" class="form-control" id="nombreApellido" placeholder="Ingrese el apellido" name="apellidoEstudiante" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fechaNacimiento"><strong>Fecha Nacimiento (YYYY/MM/DD)</strong></label>
+                <input type="date" class="form-control" id="fechaNacimiento" placeholder="Ingrese fecha de nacimiento" name="fechaNacimiento" required>
+            </div>
+
+            <div class="form-group">
+
+                <label><strong>Tipo de Escuela</strong></label>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="municipal" name="tipoEscuela" value="municipal"
+                           required>
+                    <label class="form-check-label" for="municipal">Municipal</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="subvencionado" name="tipoEscuela"
+                           value="subvencionado" required>
+                    <label class="form-check-label" for="subvencionado">Subvencionado</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="privado" name="tipoEscuela" value="privado"
+                           required>
+                    <label class="form-check-label" for="privado">Privado</label>
+                </div>
+
+
+                <label for="nombreEscuela"><strong>Nombre Escuela</strong></label>
+                <input type="text" class="form-control" id="nombreEscuela" placeholder="Ingrese el nombre de la escuela"
+                       name="nombreEscuela" required>
+
+                <label for="anioEgreso"><strong>Año Egreso</strong></label>
+                <input type="text" class="form-control" id="anioEgreso" placeholder="Ingrese el año de egreso"
+                       name="anioEgreso" required>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary">Registrar Estudiante</button>
+
+        </form>
+
+        <hr>
+    </div>
+    <hr>
+</div>
+</body>
+</html>
