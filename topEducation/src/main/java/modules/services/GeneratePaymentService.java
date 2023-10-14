@@ -1,5 +1,7 @@
 package modules.services;
 
+import lombok.Generated;
+import modules.entities.CuotaEntity;
 import modules.entities.GeneratePaymentsEntity;
 import modules.entities.StudentEntity;
 import modules.repositories.GeneratePaymentRepository;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 public class GeneratePaymentService {
@@ -92,10 +95,10 @@ public class GeneratePaymentService {
     public float descuentoTipoEscuela(GeneratePaymentsEntity g){
         StudentEntity s = g.getEstudiante();
         switch (s.getTipo_escuela()){
-            case "municipal": return (float) 0.2;
-            case "subvencionado": return (float) 0.1;
-            case "privado": return 0;
-            default: return -1;
+            case "municipal": return 0.2F;
+            case "subvencionado": return 0.1F;
+            case "privado": return 0F;
+            default: return -1F;
         }
     }
 
@@ -118,6 +121,40 @@ public class GeneratePaymentService {
     // obtener pago por id estudiante
     public GeneratePaymentsEntity obtenerPagoPorIdEstudiante(Long id_estudiante){
         return generatePaymentRepository.findByStudentId(id_estudiante);
+    }
+
+
+    @Generated
+    // aplicar descuento a todas las cuotas de los estudiantes
+    public void aplicarDescuentoPromedio(){
+        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+        for(StudentEntity s : estudiantes){
+
+            GeneratePaymentsEntity g = obtenerPagoPorIdEstudiante(s.getId());
+            if(g != null){ // esto si el estudiante tiene un pago asociado
+
+                ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(s.getId());
+
+                // calcular promedio
+                Float promedio = testService.obtenerPromedio(s.getRut());
+
+                // si el estudiante tiene pago al contado aún no pagado se le añade lo obtenido al monto devuelto
+                if (cuotas.get(0).getPago().getTipo_pago().equals("contado") && cuotas.get(0).getEstado_cuota().equals("pendiente")) {
+                    CuotaEntity c_contado = cuotas.get(0);
+                    Float monto_nuevo = c_contado.getValor_cuota() * (1 - cuotaService.descuentoPuntajePromedio(promedio)); // cuando hay que devolverle?
+                    c_contado.getPago().setSaldo_devuelto(monto_nuevo);
+                    cuotaService.guardarCuota(c_contado);
+                }
+
+                // si es en cuotas se aplica a todas las cuotas pendientes
+                for (CuotaEntity c : cuotas) {
+                    // aplicar descuento  a las cuotas
+                    Float monto_nuevo = c.getValor_cuota() * (1 - cuotaService.descuentoPuntajePromedio(promedio));
+                    c.setValor_cuota(monto_nuevo);
+                    cuotaService.guardarCuota(c);
+                }
+            }
+        }
     }
 
 

@@ -25,6 +25,13 @@ public class CuotaService {
     @Autowired
     TestService testService;
 
+
+    // guardar cuota
+    public void guardarCuota(CuotaEntity c){
+        cuotaRepository.save(c);
+    }
+
+
     // generar el numero de cuotas para un estudiante
     public void generarCuotas(GeneratePaymentsEntity g){  // fecha de pago es null
         LocalDateTime fechaActual = LocalDateTime.now();
@@ -99,41 +106,13 @@ public class CuotaService {
     // descuento por promedio de los ultimos examenes
     public Float descuentoPuntajePromedio(Float puntaje){
         if(puntaje < 850){
-            return (float) 0;
+            return 0F;
         }else if (puntaje < 899){
             return 0.02F;
         }else if (puntaje < 949){
             return 0.05F;
         }else{
             return 0.1F;
-        }
-    }
-
-    @Generated
-    // aplicar descuento a todas las cuotas de los estudiantes
-    public void aplicarDescuentoPromedio(){
-        ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
-        for(StudentEntity s : estudiantes){
-            // calcular promedio
-            Float promedio = testService.obtenerPromedio(s.getRut());
-            ArrayList<CuotaEntity> cuotas = encontrarCuotasPendientesPorIdEstudiante(s.getId());
-
-
-            // si el estudiante tiene pago al contado aún no pagado se le añade lo obtenido al monto devuelto
-            if(cuotas.get(0).getPago().getTipo_pago().equals("cuota") && cuotas.get(0).getEstado_cuota().equals("pendiente")){
-                CuotaEntity c_contado = cuotas.get(0);
-                Float monto_nuevo = c_contado.getValor_cuota() * descuentoPuntajePromedio(promedio);
-                c_contado.getPago().setSaldo_devuelto(monto_nuevo);
-                cuotaRepository.save(c_contado);
-            }
-
-            // si es en cuotas se aplica a todas las cuotas pendientes
-            for(CuotaEntity c : cuotas){
-                // aplicar descuento  a las cuotas
-                Float monto_nuevo = c.getValor_cuota() * (1 - descuentoPuntajePromedio(promedio));
-                c.setValor_cuota(monto_nuevo);
-                cuotaRepository.save(c);
-            }
         }
     }
 
@@ -200,7 +179,7 @@ public class CuotaService {
     }
 
     public void aplicarInteresAtrasoCuotas(Long id_estudiante){
-        ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotaEntitiesByIdStudent(id_estudiante);
+        ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotaEntitiesPendientesByIdStudent(id_estudiante);
         for(CuotaEntity c : cuotas){
             Float monto = c.getValor_cuota() * (1 + descuentoAtrasoCuotas(c));
             c.setValor_cuota(monto);

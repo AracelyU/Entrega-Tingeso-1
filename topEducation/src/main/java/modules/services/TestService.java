@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 @Service
 public class TestService {
@@ -99,10 +100,19 @@ public class TestService {
         testRepository.save(newData);
     }
 
+    // indica si la base de datos está vacia
+    public ArrayList<TestEntity> obtenerTest(){
+        return (ArrayList<TestEntity>) testRepository.findAll();
+    }
 
     // aplica promedio a los ultimos examenes de un estudiante
     public Float obtenerPromedio(String rut){
-        return testRepository.findPuntajePromedio(rut);
+        Float num = testRepository.findPuntajePromedio(rut);
+        if(num != null){
+            return num;
+        }else{
+            return 0F;
+        }
     }
 
     // obtiene el numero de examenes que rindio un estudiante

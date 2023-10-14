@@ -67,24 +67,29 @@ public class GeneratePaymentController {
     @PostMapping("/generarReporte")
     public String mostrandoReporte(@RequestParam("id_estudiante") Long id, Model model){
         GeneratePaymentsEntity g = generatePaymentService.obtenerPagoPorIdEstudiante(id);
-        StudentEntity s = g.getEstudiante();
-        Integer nro_pruebas = testService.numeroPruebas(s.getRut());
-        Float puntaje_promedio = testService.obtenerPromedio(s.getRut());
-        Integer cuotas_pagadas = cuotaService.cuotasPagadasPorIdEstudiante(s.getId());
-        Float saldo_pagar = cuotaService.saldoPorPagar(s.getId());
-        Float saldo_pagado = cuotaService.saldoPagado(s.getId());
-        Float total_arancel = saldo_pagado + saldo_pagar;
-        Integer cuotas_atraso = cuotaService.numeroCuotasAtrasadas(s.getId());
 
-        model.addAttribute("pagos", g);
-        model.addAttribute("nro_pruebas", nro_pruebas);
-        model.addAttribute("puntaje_promedio", puntaje_promedio);
-        model.addAttribute("cuotas_pagadas", cuotas_pagadas);
-        model.addAttribute("saldo_pagar", saldo_pagar);
-        model.addAttribute("saldo_pagado", saldo_pagado);
-        model.addAttribute("total_arancel", total_arancel);
-        model.addAttribute("cuotas_atraso", cuotas_atraso);
+        if(g != null) { // si existe ese pago
+            StudentEntity s = g.getEstudiante();
+            Integer nro_pruebas = testService.numeroPruebas(s.getRut());
+            Float puntaje_promedio = testService.obtenerPromedio(s.getRut());
+            Integer cuotas_pagadas = cuotaService.cuotasPagadasPorIdEstudiante(s.getId());
+            Float saldo_pagar = cuotaService.saldoPorPagar(s.getId());
+            Float saldo_pagado = cuotaService.saldoPagado(s.getId());
+            Float total_arancel = saldo_pagado + saldo_pagar;
+            Integer cuotas_atraso = cuotaService.numeroCuotasAtrasadas(s.getId());
 
+            model.addAttribute("pagos", g);
+            model.addAttribute("nro_pruebas", nro_pruebas);
+            model.addAttribute("puntaje_promedio", puntaje_promedio);
+            model.addAttribute("cuotas_pagadas", cuotas_pagadas);
+            model.addAttribute("saldo_pagar", saldo_pagar);
+            model.addAttribute("saldo_pagado", saldo_pagado);
+            model.addAttribute("total_arancel", total_arancel);
+            model.addAttribute("cuotas_atraso", cuotas_atraso);
+            model.addAttribute("mensaje", "Reporte generado con éxito.");
+        }else{
+            model.addAttribute("error", "No hay un pago asociado a este estudiante, por lo que no se le puede hacer un reporte.");
+        }
         return "mostrarReporte";
     }
 

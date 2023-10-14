@@ -2,6 +2,7 @@ package modules.controllers;
 
 import modules.entities.CuotaEntity;
 import modules.services.CuotaService;
+import modules.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,20 +59,7 @@ public class CuotaController {
         return "registrarPago";
     }
 
-    @PostMapping("/aplicarDescuentoPromedio")
-    public String aplicarDescuentoBD(Model model){
 
-        // Verifica si la fecha actual no está entre el 5 y el 10 del mes
-        int dayOfMonth = LocalDateTime.now().getDayOfMonth();
-        if (dayOfMonth >= 5 && dayOfMonth <= 10) {
-            model.addAttribute("error", "No se puede aplicar descuentos mientras se tramitan los pagos");
-        }
-
-        cuotaService.aplicarDescuentoPromedio();
-        model.addAttribute("mensaje", "Se ha aplicado el descuento por puntaje a toda la BD");
-
-        return "cargarCSV";
-    }
 
 
 }

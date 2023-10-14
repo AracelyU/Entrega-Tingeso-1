@@ -7,17 +7,32 @@
 </head>
 <body>
 <br>
-<form action="/" method="get" class="text-center">
-    <input class="btn btn-secondary mx-1" type="submit" value="Volver al menú principal">
-</form>
+<div class="d-flex justify-content-center">
+    <form action="/" method="get" class="text-center">
+        <input class="btn btn-secondary mx-1" type="submit" value="Volver al menú principal">
+    </form>
+    <form action="/generarReporte" method="get" class="text-center">
+        <input class="btn btn-secondary mx-1" type="submit" value="Ver otro reporte">
+    </form>
+</div>
 <br>
 
 <hr>
 
+<!-- Mostrar mensaje de éxito si existe -->
+<div th:if="${mensaje}" class="alert alert-success" style="font-size: 1em; text-align: center;">
+    <p th:text="${mensaje}"></p>
+</div>
+
+<!-- Mostrar mensaje de error -->
+<div th:if="${error}" class="alert alert-danger" style="font-size: 1em; text-align: center;">
+    <p th:text="${error}"></p>
+</div>
+
+
 <div class="container mt-4">
     <h1 class="text-center">Reporte Estudiante</h1>
     <hr>
-
     <form>
         <!-- Iterar a través de los pagos y mostrar cada uno en un formulario estético -->
         <th:block th:each="pago : ${pagos}">

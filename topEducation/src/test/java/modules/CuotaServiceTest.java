@@ -28,192 +28,163 @@ class CuotaServiceTest {
     CuotaRepository cuotaRepository;
 
     @Autowired
-    GeneratePaymentRepository generatePaymentRepository;
-
-    @Autowired
     StudentRepository studentRepository;
 
+    @Autowired
+    GeneratePaymentRepository generatePaymentRepository;
 
 
     @Test
+    void testGuardarCuota(){
+        StudentEntity s = new StudentEntity();
+        s.setRut("1122334455");
+        studentRepository.save(s);
+        GeneratePaymentsEntity g = new GeneratePaymentsEntity();
+        g.setEstudiante(s);
+        generatePaymentRepository.save(g);
+        CuotaEntity c = new CuotaEntity();
+        c.setPago(g);
+        cuotaService.guardarCuota(c);
+        assertNotNull(cuotaRepository.findAll());
+        cuotaRepository.delete(c);
+        generatePaymentRepository.delete(g);
+        studentRepository.delete(s);
+    }
+
+    @Test
     void testGenerarCuota(){
-        cuotaRepository.deleteAll();
-        generatePaymentRepository.deleteAll();
-        studentRepository.deleteAll();
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("120932401");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("120932401");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
         g.setTipo_pago("cuotas");
         g.setNumero_cuota(2);
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         g.setMonto_total_arancel(430000F);
         generatePaymentRepository.save(g);
 
         cuotaService.generarCuotas(g);
-        ArrayList<CuotaEntity> cuotas = cuotaRepository.findCuotaEntitiesByIdStudent(nuevoEstudiante.getId());
-        assertNotNull(cuotas);
+        assertNotNull(cuotaRepository.findAll());
 
         cuotaRepository.deleteAll();
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
-
+        studentRepository.delete(s);
     }
 
 
     @Test
     void testEncontrarCuotasPorIdEstudiante(){
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654320");
-        nuevoEstudiante.setNombre_estudiante("Pedro");
-        nuevoEstudiante.setApellido_estudiante("Van");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654320");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setNumero_cuota(1);
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
         // generando cuota
         CuotaEntity c = new CuotaEntity();
-        c.setValor_cuota(1F);
-        c.setEstado_cuota("pendiente");
-        c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
 
-        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(g.getEstudiante().getId());
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         assertNotNull(cuotas);
 
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
     @Test
     void testEncontrarCuotasPendientesPorIdEstudiante(){
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654331B");
-        nuevoEstudiante.setNombre_estudiante("Alex");
-        nuevoEstudiante.setApellido_estudiante("Van");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654320");
+        studentRepository.save(s);
+
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setEstudiante(nuevoEstudiante);
-        g.setNumero_cuota(1);
-        g.setTipo_pago("contado");
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
+
         // generando cuota
         CuotaEntity c = new CuotaEntity();
-        c.setValor_cuota(1F);
-        c.setEstado_cuota("pendiente");
-        c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
-        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(g.getEstudiante().getId());
-        assertNotNull(cuotas); // Asegura que la lista tenga elementos
+
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPendientesPorIdEstudiante(s.getId());
+        assertNotNull(cuotas);
+
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
     }
 
     @Test
     void testVerificarPagarCuota() {   // Este test esta muy influenciado por al fecha, puede fallar de la nada según la fecha
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654320");
-        nuevoEstudiante.setNombre_estudiante("Pedro");
-        nuevoEstudiante.setApellido_estudiante("Van");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654320");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setNumero_cuota(1);
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
         // generando cuota
         CuotaEntity c = new CuotaEntity();
-        c.setValor_cuota(1F);
-        c.setEstado_cuota("pendiente");
-        c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
 
-        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(g.getEstudiante().getId());
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         String mensaje = cuotaService.verificarPagarCuota(cuotas.get(0).getId());
 
         assertEquals("No se puede pagar la cuota, se puede pagar entre el día 5 y 10 de cada mes.", mensaje); // Asegura que la lista tenga elementos
 
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
     @Test
     void testPagarCuota(){
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654321");
-        nuevoEstudiante.setNombre_estudiante("Alex");
-        nuevoEstudiante.setApellido_estudiante("Van");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654321");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
         // generando cuota
         CuotaEntity c = new CuotaEntity();
-        c.setValor_cuota(1F);
         c.setEstado_cuota("pendiente");
         c.setPago(g);
         cuotaRepository.save(c);
 
         cuotaService.pagarCuota(c.getId());
-
         c = cuotaService.obtenerCuotaPorId(c.getId());
-
         assertEquals("pagado", c.getEstado_cuota());
 
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
-
+        studentRepository.delete(s);
 
     }
 
     @Test
     void testDescuentoPuntajePromedio(){
+
         assertEquals(0.05F,cuotaService.descuentoPuntajePromedio(930F));
     }
 
@@ -221,18 +192,13 @@ class CuotaServiceTest {
     @Test
     void testCuotasPagadasPorIdEstudiante(){
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654321");
-        nuevoEstudiante.setNombre_estudiante("Alex");
-        nuevoEstudiante.setApellido_estudiante("Van");
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654321");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
         // generando cuota
@@ -242,61 +208,63 @@ class CuotaServiceTest {
         c.setPago(g);
         cuotaRepository.save(c);
 
-        assertNotEquals(0, cuotaService.cuotasPagadasPorIdEstudiante(g.getEstudiante().getId())); // Asegura que la lista tenga elementos
+        assertEquals(1, cuotaService.cuotasPagadasPorIdEstudiante(s.getId()));
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
     @Test
     void testSaldoPorPagar(){
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654321");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654321");
+        studentRepository.save(s);
+
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
+
         // generando cuota
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1F);
-        c.setEstado_cuota("pendiente");  // hay una cuota pagada
-        c.setNumero_cuota(1);
+        c.setEstado_cuota("pendiente");
         c.setPago(g);
         cuotaRepository.save(c);
-        assertEquals(1F, cuotaService.saldoPorPagar(g.getEstudiante().getId()));
+
+        assertEquals(1F, cuotaService.saldoPorPagar(s.getId()));
+
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
     }
 
     @Test
     void testSaldoPagado(){
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("987654321");
-        nuevoEstudiante.setNombre_escuela("Escuela 1");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("987654321");
+        studentRepository.save(s);
+
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
+
         // generando cuota
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1000000F);
-        c.setEstado_cuota("pagado");  // hay una cuota pagada
-        c.setNumero_cuota(1);
+        c.setEstado_cuota("pagado");
         c.setPago(g);
         cuotaRepository.save(c);
+
         assertEquals(1000000F, cuotaService.saldoPagado(g.getEstudiante().getId()));
+
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
@@ -305,36 +273,28 @@ class CuotaServiceTest {
     void testObtenerCuotaPorId(){
 
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("98765432C");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("98765432C");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setTipo_pago("cuotas");
-        g.setNumero_cuota(1);
-        g.setMonto_total_arancel(430000F);
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1000000F);
-        c.setEstado_cuota("pagado");  // hay una cuota pagada
-        c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
 
-        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(nuevoEstudiante.getId());
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         CuotaEntity c2 = cuotaService.obtenerCuotaPorId(cuotas.get(0).getId());
 
         assertEquals(1000000F, c2.getValor_cuota());
 
-        cuotaRepository.deleteAll();
+        cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
@@ -342,36 +302,28 @@ class CuotaServiceTest {
     void testDescuentoAtrasoCuotas(){
 
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("98765432C");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("98765432C");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setTipo_pago("cuotas");
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
-        cuotaRepository.deleteAll();
         CuotaEntity c = new CuotaEntity();
-        c.setValor_cuota(1000000F);
-        c.setEstado_cuota("pendiente");  // hay una cuota pagada
-        c.setNumero_cuota(1);
         c.setPago(g);
-        c.setFecha_vencimiento(LocalDateTime.of(2021, 6, 10, 0, 0));
+        c.setFecha_vencimiento(LocalDateTime.of(2021, 6, 10, 0, 0)); // vencio hace años
         cuotaRepository.save(c);
 
-        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(nuevoEstudiante.getId());
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         CuotaEntity c2 = cuotas.get(0);
 
         assertEquals(0.015F,cuotaService.descuentoAtrasoCuotas(c2));
 
-        cuotaRepository.deleteAll();
+        cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
@@ -381,66 +333,64 @@ class CuotaServiceTest {
     void testSplicarInteresAtrasoCuotas(){
 
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("98765432C");
-        nuevoEstudiante.setFecha_nacimiento(LocalDate.of(2003, 5, 13));
-        nuevoEstudiante.setTipo_escuela("privado");
-        nuevoEstudiante.setAnio_egreso("2023");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("98765432C");
+        studentRepository.save(s);
 
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setTipo_pago("cuotas");
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
 
         CuotaEntity c = new CuotaEntity();
         c.setValor_cuota(1000000F);
-        c.setEstado_cuota("pendiente");  // hay una cuota pagada
-        c.setNumero_cuota(1);
+        c.setEstado_cuota("pendiente");
         c.setPago(g);
-        c.setFecha_vencimiento(LocalDateTime.of(2021, 6, 10, 0, 0));
+        c.setFecha_vencimiento(LocalDateTime.of(2021, 6, 10, 0, 0)); // vencio hace años
         cuotaRepository.save(c);
 
-        cuotaService.aplicarInteresAtrasoCuotas(nuevoEstudiante.getId());
-        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(nuevoEstudiante.getId());
+        cuotaService.aplicarInteresAtrasoCuotas(s.getId());
+        ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         CuotaEntity c2 = cuotas.get(0);
 
         assertEquals(1015000F,c2.getValor_cuota());
 
         cuotaRepository.deleteAll();
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
 
 
     @Test
-    void testNumeroCuotasAtrasadas(){
+    void testNumeroCuotasAtrasadas() {
         // creando estudiante
-        StudentEntity nuevoEstudiante = new StudentEntity();
-        nuevoEstudiante.setRut("000000AAAAA");
-        studentRepository.save(nuevoEstudiante);
+        StudentEntity s = new StudentEntity();
+        s.setRut("000000AAAAA");
+        studentRepository.save(s);
+
         // generando pago
         GeneratePaymentsEntity g = new GeneratePaymentsEntity();
-        g.setEstudiante(nuevoEstudiante);
+        g.setEstudiante(s);
         generatePaymentRepository.save(g);
+
         // generando cuota
         CuotaEntity c = new CuotaEntity();
-        c.setValor_cuota(1F);
-        c.setEstado_cuota("pendiente"); // se define una fecha tal que hay meses de diferencia
-        LocalDateTime fecha = LocalDateTime.of(2023, 8, 3, 0, 0);
+        c.setEstado_cuota("pendiente");
+        LocalDateTime fecha = LocalDateTime.of(2021, 8, 3, 0, 0); // vencio hace años
         c.setFecha_vencimiento(fecha);
-        c.setNumero_cuota(1);
         c.setPago(g);
         cuotaRepository.save(c);
 
-        assertEquals(1, cuotaService.numeroCuotasAtrasadas(nuevoEstudiante.getId()));
+        assertEquals(1, cuotaService.numeroCuotasAtrasadas(s.getId()));
+
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
-        studentRepository.delete(nuevoEstudiante);
+        studentRepository.delete(s);
 
     }
+
+
 
 
 }
