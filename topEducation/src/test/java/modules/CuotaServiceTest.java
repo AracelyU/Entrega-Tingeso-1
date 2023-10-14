@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
@@ -319,7 +319,7 @@ class CuotaServiceTest {
         ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         CuotaEntity c2 = cuotas.get(0);
 
-        assertEquals(0.015F,cuotaService.descuentoAtrasoCuotas(c2));
+        assertEquals(0.15F,cuotaService.descuentoAtrasoCuotas(c2));
 
         cuotaRepository.delete(c);
         generatePaymentRepository.delete(g);
@@ -330,7 +330,7 @@ class CuotaServiceTest {
 
 
     @Test
-    void testSplicarInteresAtrasoCuotas(){
+    void testAplicarInteresAtrasoCuotas(){
 
         // creando estudiante
         StudentEntity s = new StudentEntity();
@@ -346,14 +346,14 @@ class CuotaServiceTest {
         c.setValor_cuota(1000000F);
         c.setEstado_cuota("pendiente");
         c.setPago(g);
-        c.setFecha_vencimiento(LocalDateTime.of(2021, 6, 10, 0, 0)); // vencio hace años
+        c.setFecha_vencimiento(LocalDateTime.of(2023, 3, 10, 0, 0)); // muchos meses de diferencia
         cuotaRepository.save(c);
 
         cuotaService.aplicarInteresAtrasoCuotas(s.getId());
         ArrayList<CuotaEntity> cuotas = cuotaService.encontrarCuotasPorIdEstudiante(s.getId());
         CuotaEntity c2 = cuotas.get(0);
 
-        assertEquals(1015000F,c2.getValor_cuota());
+        assertEquals(1150000F,c2.getValor_cuota());
 
         cuotaRepository.deleteAll();
         generatePaymentRepository.delete(g);

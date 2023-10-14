@@ -1,0 +1,1 @@
+mvn clean verify sonar:sonar -Dsonar.projectKey=topEducation -Dsonar.projectName='topEducation' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_4975ba8e69df1ee1d0e77cbbb62bedb2299aa4e0

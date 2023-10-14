@@ -151,7 +151,7 @@ public class CuotaService {
         int diferencia_anio = c.getFecha_vencimiento().getYear()- fecha_actual.getYear();
 
         if(diferencia_anio < 0){ // no se esta pagando dentro del año
-            return 0.015F;
+            return 0.15F;
         }
 
         if(fecha_actual.isAfter(c.getFecha_vencimiento())){// la cuota esta vencida
