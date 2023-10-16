@@ -11,6 +11,7 @@ services:
     depends_on:
       - topeducation1
       - topeducation2
+      - topeducation3
 
   mysql-db:
     image: mysql
