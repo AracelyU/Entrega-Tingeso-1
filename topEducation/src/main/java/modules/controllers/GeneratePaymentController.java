@@ -89,6 +89,9 @@ public class GeneratePaymentController {
             model.addAttribute("mensaje", "Reporte generado con éxito.");
         }else{
             model.addAttribute("error", "No hay un pago asociado a este estudiante, por lo que no se le puede hacer un reporte.");
+            ArrayList<StudentEntity> estudiantes = studentService.obtenerEstudiantes();
+            model.addAttribute("students", estudiantes);
+            return "generarReporte";
         }
         return "mostrarReporte";
     }

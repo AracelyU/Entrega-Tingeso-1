@@ -52,3 +52,19 @@ services:
         condition: on-failure
     depends_on:
       - mysql-db
+
+
+  topeducation3:
+    container_name: project-topeducation3
+    image: aracelyu/tingeso1
+    ports:
+      - "8093:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/topedu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=2190
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mysql-db

@@ -28,6 +28,11 @@
 </head>
 <body>
 
+<!-- Mostrar mensaje de error -->
+<div th:if="${error}" class="alert alert-danger" style="font-size: 1em; text-align: center;">
+    <p th:text="${error}"></p>
+</div>
+
 
 <div class="container-center">
     <h3>Seleccione un estudiante para generar su reporte</h3>

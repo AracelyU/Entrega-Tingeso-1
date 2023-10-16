@@ -50,7 +50,9 @@ public class TestController{
         int dayOfMonth = LocalDateTime.now().getDayOfMonth();
         if (dayOfMonth >= 5 && dayOfMonth <= 10) {
             model.addAttribute("error2", "No se puede aplicar descuentos mientras se tramitan los pagos");
+
         }else {
+
             if (testService.obtenerTest().isEmpty()) {
                 model.addAttribute("error2", "No hay ningún examen cargado, no se puede aplicar descuento");
             } else {
